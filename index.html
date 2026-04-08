@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Portal — Financial Analysis Division</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green:       #1e4d3b;
+    --green-mid:   #2d6b54;
+    --green-light: #3a8068;
+    --green-pale:  #edf3f0;
+    --green-xpale: #f4f8f6;
+    --gold:        #b8973a;
+    --gold-light:  #d4b96a;
+    --cream:       #faf9f6;
+    --white:       #ffffff;
+    --ink:         #1a2820;
+    --ink-mid:     #3d5248;
+    --ink-soft:    #6b8278;
+    --ink-faint:   #a8bdb5;
+    --border:      #d6e4de;
+    --border-dark: #b0c9be;
+    --red:         #b84a3a;
+    --red-pale:    #fdf0ee;
+    --amber:       #b87a1e;
+    --amber-pale:  #fdf6ee;
+    --blue:        #2a5f8f;
+    --blue-pale:   #eef4fb;
+    --font-serif:  'Playfair Display', Georgia, serif;
+    --font-sans:   'DM Sans', 'Helvetica Neue', sans-serif;
+    --shadow-sm:   0 1px 4px rgba(30,77,59,0.07);
+    --shadow-md:   0 4px 20px rgba(30,77,59,0.10);
+    --shadow-lg:   0 8px 40px rgba(30,77,59,0.13);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    background: var(--green);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .topnav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-icon {
+    width: 34px; height: 34px;
+    background: var(--gold);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .brand-name {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.8px;
+  }
+  .brand-divider {
+    width: 1px; height: 20px;
+    background: rgba(255,255,255,0.2);
+  }
+  .brand-sub {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  .topnav-right {
+    display: flex; align-items: center; gap: 24px;
+  }
+  .nav-stat { text-align: right; }
+  .nav-stat-val {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--white);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .nav-stat-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .nav-sep { width:1px; height:28px; background:rgba(255,255,255,0.12); }
+  .nav-user {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--white);
+    font-family: var(--font-sans);
+  }
+  .nav-user-info-name { font-size: 12px; color: var(--white); font-weight: 500; }
+  .nav-user-info-role { font-size: 9px; color: rgba(255,255,255,0.45); margin-top: 1px; letter-spacing: 0.5px; }
+  .clock {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--gold-light);
+    font-weight: 500;
+    letter-spacing: 1.5px;
+  }
+
+  /* ── LAYOUT ── */
+  .shell { display: flex; height: calc(100vh - 56px); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 210px;
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .sidebar-section {
+    padding: 20px 0 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    padding: 0 20px 10px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    border-left: 3px solid transparent;
+    font-family: var(--font-sans);
+    letter-spacing: 0.1px;
+  }
+  .nav-item:hover {
+    color: var(--green);
+    background: var(--green-xpale);
+  }
+  .nav-item.active {
+    color: var(--green);
+    background: var(--green-pale);
+    border-left-color: var(--green);
+    font-weight: 500;
+  }
+  .nav-icon { font-size: 14px; width: 18px; text-align: center; opacity: 0.8; }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--gold);
+    color: var(--white);
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .sidebar-quick {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .quick-item { margin-bottom: 12px; }
+  .quick-item:last-child { margin-bottom: 0; }
+  .quick-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 3px; }
+  .quick-val {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .quick-val.green { color: var(--green); }
+  .quick-val.gold { color: var(--gold); }
+  .quick-val.red { color: var(--red); }
+  .sidebar-footer { margin-top: auto; padding: 16px 20px; }
+  .footer-version { font-size: 9px; color: var(--ink-faint); letter-spacing: 1px; }
+
+  /* ── MAIN ── */
+  .main { flex: 1; overflow-y: auto; background: var(--cream); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 28px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.2px;
+    line-height: 1;
+  }
+  .page-subtitle {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-top: 5px;
+    letter-spacing: 0.2px;
+    font-weight: 300;
+  }
+  .page-actions { display: flex; gap: 10px; }
+  .btn {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.3px;
+  }
+  .btn-ghost {
+    background: none;
+    border: 1px solid var(--border-dark);
+    color: var(--ink-mid);
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); background: var(--green-xpale); }
+  .btn-primary {
+    background: var(--green);
+    border: 1px solid var(--green);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--green-mid); border-color: var(--green-mid); }
+  .btn-gold {
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    color: var(--white);
+  }
+  .btn-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+
+  /* ── CONTENT ── */
+  .content { padding: 24px 28px; }
+  .hidden { display: none !important; }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display: grid; gap: 14px; margin-bottom: 20px; }
+  .kpi-row-5 { grid-template-columns: repeat(5,1fr); }
+  .kpi-row-4 { grid-template-columns: repeat(4,1fr); }
+  .kpi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .kpi-card:hover { box-shadow: var(--shadow-md); }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .kpi-card.c-green::after { background: var(--green); }
+  .kpi-card.c-gold::after { background: var(--gold); }
+  .kpi-card.c-red::after { background: var(--red); }
+  .kpi-card.c-blue::after { background: var(--blue); }
+  .kpi-card.c-amber::after { background: var(--amber); }
+  .kpi-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; font-weight: 500; }
+  .kpi-value {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-card.c-green .kpi-value { color: var(--green); }
+  .kpi-card.c-gold .kpi-value { color: var(--gold); }
+  .kpi-card.c-red .kpi-value { color: var(--red); }
+  .kpi-card.c-blue .kpi-value { color: var(--blue); }
+  .kpi-card.c-amber .kpi-value { color: var(--amber); }
+  .kpi-change { font-size: 10px; display: flex; align-items: center; gap: 4px; }
+  .kpi-change.up { color: var(--green-light); }
+  .kpi-change.dn { color: var(--red); }
+  .kpi-change.flat { color: var(--ink-faint); }
+
+  /* ── PANELS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .grid-65-35 { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .mb { margin-bottom: 20px; }
+
+  .panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .panel:hover { box-shadow: var(--shadow-md); }
+  .panel-head {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--white);
+  }
+  .panel-head-left { display: flex; align-items: center; gap: 8px; }
+  .panel-head-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .panel-title { font-size: 11px; font-weight: 600; color: var(--ink-mid); letter-spacing: 1px; text-transform: uppercase; }
+  .panel-meta { font-size: 10px; color: var(--ink-faint); }
+  .panel-body { padding: 16px 18px; }
+
+  /* ── TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    text-align: left;
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0 10px 10px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 10px;
+    font-size: 12.5px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--green-xpale);
+    vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--green-xpale); }
+
+  .td-name { display: flex; align-items: center; gap: 9px; }
+  .td-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; flex-shrink: 0;
+    font-family: var(--font-sans);
+  }
+  .av-green { background: var(--green-pale); color: var(--green); }
+  .av-gold  { background: #fdf6e3; color: var(--gold); }
+  .av-blue  { background: var(--blue-pale); color: var(--blue); }
+  .av-red   { background: var(--red-pale); color: var(--red); }
+  .av-amber { background: var(--amber-pale); color: var(--amber); }
+  .av-teal  { background: #e8f5f0; color: var(--green-light); }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 10px;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .tag-green { background: var(--green-pale); color: var(--green); border: 1px solid #c8ddd5; }
+  .tag-gold  { background: #fdf6e3; color: var(--gold); border: 1px solid #e8d9a0; }
+  .tag-red   { background: var(--red-pale); color: var(--red); border: 1px solid #e8c4be; }
+  .tag-blue  { background: var(--blue-pale); color: var(--blue); border: 1px solid #bdd0e8; }
+  .tag-amber { background: var(--amber-pale); color: var(--amber); border: 1px solid #e8d0a0; }
+
+  /* BARS */
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { width: 90px; font-size: 11px; color: var(--ink-mid); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 6px; background: var(--green-xpale); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bf-green { background: var(--green); }
+  .bf-gold  { background: var(--gold); }
+  .bf-blue  { background: var(--blue); }
+  .bf-amber { background: var(--amber); }
+  .bf-teal  { background: var(--green-light); }
+  .bf-soft  { background: var(--ink-faint); }
+  .bar-val { width: 38px; text-align: right; font-size: 11px; color: var(--ink-mid); flex-shrink: 0; font-weight: 500; }
+
+  /* PIPELINE */
+  .pipeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .pipeline-card {
+    background: var(--green-xpale);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .pipeline-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    border-radius: 3px 3px 0 0;
+  }
+  .pc-1::before { background: var(--ink-faint); }
+  .pc-2::before { background: var(--blue); }
+  .pc-3::before { background: var(--amber); }
+  .pc-4::before { background: var(--green); }
+  .pipeline-count {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .pc-1 .pipeline-count { color: var(--ink-soft); }
+  .pc-2 .pipeline-count { color: var(--blue); }
+  .pc-3 .pipeline-count { color: var(--amber); }
+  .pc-4 .pipeline-count { color: var(--green); }
+  .pipeline-label { font-size: 10px; color: var(--ink-soft); letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; }
+
+  /* ACTIVITY */
+  .activity-item { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--green-xpale); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-line {
+    display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid; flex-shrink: 0; }
+  .ad-green { border-color: var(--green); background: var(--green-pale); }
+  .ad-gold  { border-color: var(--gold); background: #fdf6e3; }
+  .ad-red   { border-color: var(--red); background: var(--red-pale); }
+  .ad-blue  { border-color: var(--blue); background: var(--blue-pale); }
+  .activity-text { font-size: 11.5px; color: var(--ink-mid); line-height: 1.5; flex: 1; }
+  .activity-time { font-size: 10px; color: var(--ink-faint); white-space: nowrap; margin-top: 1px; flex-shrink: 0; }
+
+  /* DONUT */
+  .donut-wrap { display: flex; align-items: center; gap: 20px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 8px; }
+  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--ink-mid); }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* SEARCH */
+  .search-row { display: flex; gap: 10px; margin-bottom: 14px; align-items: center; }
+  .search-input {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid var(--border-dark);
+    color: var(--ink);
+    padding: 8px 12px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.15s;
+  }
+  .search-input::placeholder { color: var(--ink-faint); }
+  .search-input:focus { border-color: var(--green); }
+  .filter-select {
+    background: var(--white);
+    border: 1px solid var(--border-dark);
+    color: var(--ink-mid);
+    padding: 8px 10px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    outline: none;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .filter-select:focus { border-color: var(--green); }
+
+  /* PAYROLL */
+  .payroll-row { display: flex; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--green-xpale); gap: 10px; }
+  .payroll-row:last-child { border-bottom: none; }
+  .payroll-dept { font-size: 12px; color: var(--ink-mid); width: 90px; flex-shrink: 0; }
+  .payroll-bar { flex: 1; height: 5px; background: var(--green-xpale); border-radius: 3px; overflow: hidden; }
+  .payroll-bar-fill { height: 100%; background: var(--green); border-radius: 3px; }
+  .payroll-pct { font-size: 10px; color: var(--ink-faint); width: 28px; text-align: right; flex-shrink: 0; }
+  .payroll-amount { font-family: var(--font-serif); font-size: 15px; font-weight: 700; color: var(--green); width: 80px; text-align: right; flex-shrink: 0; }
+
+  /* HEATMAP */
+  .hm-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+  .hm-cell {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8.5px;
+    font-weight: 500;
+    color: var(--ink-mid);
+  }
+  .hm-0    { background: var(--green-xpale); color: var(--ink-faint); }
+  .hm-low  { background: #cce0d8; color: var(--green); }
+  .hm-mid  { background: #99c4b3; color: var(--green); }
+  .hm-high { background: #5da38a; color: var(--white); }
+  .hm-full { background: var(--green); color: var(--white); }
+  .hm-leave  { background: #f0e8ce; color: var(--gold); }
+  .hm-absent { background: #f8d8d4; color: var(--red); }
+  .hm-label { text-align: center; font-size: 9px; color: var(--ink-faint); }
+
+  /* GAUGE */
+  .gauge-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .gauge-card {
+    background: var(--green-xpale);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px;
+    text-align: center;
+  }
+  .gauge-name { font-size: 10.5px; color: var(--ink-mid); margin-bottom: 6px; font-weight: 500; }
+  .gauge-score {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .gauge-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .gauge-fill { height: 100%; background: var(--green); border-radius: 2px; }
+  .gauge-dept { font-size: 9px; color: var(--ink-faint); letter-spacing: 0.5px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(26,40,32,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 4px;
+    width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+  }
+  .modal-header {
+    background: var(--green);
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-title {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    color: var(--white);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .modal-close { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 18px; line-height: 1; }
+  .modal-close:hover { color: var(--white); }
+  .modal-body { padding: 20px; }
+  .form-row { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 5px; font-weight: 500; }
+  .form-input, .form-select {
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--border-dark);
+    color: var(--ink);
+    padding: 8px 12px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(30,77,59,0.08); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 10px;
+    background: var(--cream);
+  }
+
+  /* DIVIDER */
+  .section-rule {
+    border: none; border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--green-mid); }
+
+  /* ANIMATIONS */
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.4; transform:scale(0.8); }
+  }
+  .content > * { animation: fadeSlideIn 0.25s ease forwards; }
+
+  /* KPI DIVLINE on dashboard */
+  .divline {
+    width: 40px; height: 2px; background: var(--green); margin: 10px 0;
+    border-radius: 1px;
+  }
+
+  /* Highlight number */
+  .highlight-num {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="topnav-brand">
+    <div class="brand-icon">B</div>
+    <span class="brand-name">Banyan Partners</span>
+    <div class="brand-divider"></div>
+    <span class="brand-sub">HR Portal</span>
+  </div>
+  <div class="topnav-right">
+    <div class="nav-stat">
+      <div class="nav-stat-val">25</div>
+      <div class="nav-stat-label">Headcount</div>
+    </div>
+    <div class="nav-sep"></div>
+    <div class="nav-stat">
+      <div class="nav-stat-val">84.2</div>
+      <div class="nav-stat-label">Avg. Performance</div>
+    </div>
+    <div class="nav-sep"></div>
+    <div class="nav-stat">
+      <div class="nav-stat-val">4.2%</div>
+      <div class="nav-stat-label">Turnover Rate</div>
+    </div>
+    <div class="nav-sep"></div>
+    <span class="clock" id="clock">00:00:00</span>
+    <div class="nav-sep"></div>
+    <div class="nav-user">
+      <div class="nav-avatar">SY</div>
+      <div>
+        <div class="nav-user-info-name">Shwe Yee Oo</div>
+        <div class="nav-user-info-role">Sr. Investment Analyst</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Modules</div>
+      <button class="nav-item active" onclick="showPanel('dashboard',this)">
+        <span class="nav-icon">⊞</span> Dashboard
+      </button>
+      <button class="nav-item" onclick="showPanel('directory',this)">
+        <span class="nav-icon">◎</span> Directory
+      </button>
+      <button class="nav-item" onclick="showPanel('attendance',this)">
+        <span class="nav-icon">◷</span> Attendance
+      </button>
+      <button class="nav-item" onclick="showPanel('checkin',this)">
+        <span class="nav-icon">✅</span> Check In/Out
+      </button>
+      <button class="nav-item" onclick="showPanel('payroll',this)">
+        <span class="nav-icon">≋</span> Payroll
+      </button>
+      <button class="nav-item" onclick="showPanel('performance',this)">
+        <span class="nav-icon">△</span> Performance
+      </button>
+
+    </div>
+    <div class="sidebar-quick">
+      <div class="sidebar-label" style="padding:0 0 10px">Today</div>
+      <div class="quick-item">
+        <div class="quick-label">On Leave</div>
+        <div class="quick-val gold">3</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-label">Pending Reviews</div>
+        <div class="quick-val green">8</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-label">New This Month</div>
+        <div class="quick-val green">2</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-label">Total Staff</div>
+        <div class="quick-val green" id="sidebar-headcount">25</div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="footer-version">Banyan HR · v2.1 · Q2 2026</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ════ DASHBOARD ════ -->
+    <div id="panel-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Overview Dashboard</div>
+          <div class="page-subtitle">Q2 2026 · Financial Analysis Division · Phnom Penh HQ</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">↓ Export Report</button>
+          <button class="btn btn-primary">Refresh Data</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="kpi-row kpi-row-5">
+          <div class="kpi-card c-green">
+            <div class="kpi-label">Total Headcount</div>
+            <div class="kpi-value">47</div>
+            <div class="kpi-change up">▲ +2 this month</div>
+          </div>
+          <div class="kpi-card c-gold">
+            <div class="kpi-label">Avg Performance</div>
+            <div class="kpi-value">84.2</div>
+            <div class="kpi-change up">▲ +1.3 vs Q1</div>
+          </div>
+          <div class="kpi-card c-blue">
+            <div class="kpi-label">Attendance Rate</div>
+            <div class="kpi-value">96.4%</div>
+            <div class="kpi-change up">▲ +0.4%</div>
+          </div>
+          <div class="kpi-card c-red">
+            <div class="kpi-label">Turnover Rate</div>
+            <div class="kpi-value">4.2%</div>
+            <div class="kpi-change up">▼ −0.8% improved</div>
+          </div>
+          <div class="kpi-card c-amber">
+            <div class="kpi-label">Monthly Payroll</div>
+            <div class="kpi-value">฿6.5M</div>
+            <div class="kpi-change flat">— on budget</div>
+          </div>
+        </div>
+
+        <div class="grid-65-35">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Headcount by Department</span></div>
+              <span class="panel-meta">47 total · April 2026</span>
+            </div>
+            <div class="panel-body">
+              <div class="bar-row"><span class="bar-label">Investment</span><div class="bar-track"><div class="bar-fill bf-green" style="width:70%"></div></div><span class="bar-val">14</span></div>
+              <div class="bar-row"><span class="bar-label">Research</span><div class="bar-track"><div class="bar-fill bf-blue" style="width:55%"></div></div><span class="bar-val">11</span></div>
+              <div class="bar-row"><span class="bar-label">Operations</span><div class="bar-track"><div class="bar-fill bf-teal" style="width:35%"></div></div><span class="bar-val">7</span></div>
+              <div class="bar-row"><span class="bar-label">Finance</span><div class="bar-track"><div class="bar-fill bf-amber" style="width:30%"></div></div><span class="bar-val">6</span></div>
+              <div class="bar-row"><span class="bar-label">IT / Tech</span><div class="bar-track"><div class="bar-fill bf-gold" style="width:20%"></div></div><span class="bar-val">4</span></div>
+              <div class="bar-row"><span class="bar-label">Admin</span><div class="bar-track"><div class="bar-fill bf-soft" style="width:25%"></div></div><span class="bar-val">5</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot" style="background:var(--gold)"></div><span class="panel-title">Employment Status</span></div>
+            </div>
+            <div class="panel-body">
+              <div class="donut-wrap">
+                <svg width="110" height="110" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#edf3f0" stroke-width="6"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1e4d3b" stroke-width="6"
+                    stroke-dasharray="72 28" stroke-dashoffset="25" transform="rotate(-90 21 21)"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#b8973a" stroke-width="6"
+                    stroke-dasharray="13 87" stroke-dashoffset="-47" transform="rotate(-90 21 21)"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#2a5f8f" stroke-width="6"
+                    stroke-dasharray="10 90" stroke-dashoffset="-60" transform="rotate(-90 21 21)"/>
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#b84a3a" stroke-width="6"
+                    stroke-dasharray="5 95" stroke-dashoffset="-70" transform="rotate(-90 21 21)"/>
+                  <text x="21" y="22" text-anchor="middle" fill="#1e4d3b" font-size="6" font-family="Georgia,serif" font-weight="600">47</text>
+                  <text x="21" y="27" text-anchor="middle" fill="#a8bdb5" font-size="3.2" font-family="Jost,sans-serif">STAFF</text>
+                </svg>
+                <div class="donut-legend">
+                  <div class="legend-row"><div class="legend-swatch" style="background:var(--green)"></div>Active — 34 (72%)</div>
+                  <div class="legend-row"><div class="legend-swatch" style="background:var(--gold)"></div>On Leave — 6 (13%)</div>
+                  <div class="legend-row"><div class="legend-swatch" style="background:var(--blue)"></div>Probation — 5 (10%)</div>
+                  <div class="legend-row"><div class="legend-swatch" style="background:var(--red)"></div>Notice — 2 (5%)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot" style="background:var(--gold)"></div><span class="panel-title">Top Performers · Q2</span></div>
+              <span class="panel-meta">By KPI score</span>
+            </div>
+            <div class="panel-body">
+              <div class="gauge-grid">
+                <div class="gauge-card">
+                  <div class="gauge-name">Nara Pich</div>
+                  <div class="gauge-score">96</div>
+                  <div class="gauge-bar"><div class="gauge-fill" style="width:96%;background:var(--green)"></div></div>
+                  <div class="gauge-dept">Investment</div>
+                </div>
+                <div class="gauge-card">
+                  <div class="gauge-name">Sophal Kim</div>
+                  <div class="gauge-score" style="color:var(--gold)">93</div>
+                  <div class="gauge-bar"><div class="gauge-fill" style="width:93%;background:var(--gold)"></div></div>
+                  <div class="gauge-dept">Research</div>
+                </div>
+                <div class="gauge-card">
+                  <div class="gauge-name">Dara Heng</div>
+                  <div class="gauge-score" style="color:var(--blue)">91</div>
+                  <div class="gauge-bar"><div class="gauge-fill" style="width:91%;background:var(--blue)"></div></div>
+                  <div class="gauge-dept">Finance</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot" style="background:var(--amber)"></div><span class="panel-title">Activity Log</span></div>
+              <span class="panel-meta">Today</span>
+            </div>
+            <div class="panel-body">
+              <div class="activity-item">
+                <div class="activity-line"><div class="activity-dot ad-green"></div></div>
+                <span class="activity-text">Nara Pich joined Investment team as Sr. Analyst</span>
+                <span class="activity-time">09:14</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-line"><div class="activity-dot ad-gold"></div></div>
+                <span class="activity-text">Chan Dara submitted annual leave request — 5 days</span>
+                <span class="activity-time">09:42</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-line"><div class="activity-dot ad-blue"></div></div>
+                <span class="activity-text">Q2 performance review cycle opened · 8 pending</span>
+                <span class="activity-time">10:00</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-line"><div class="activity-dot ad-green"></div></div>
+                <span class="activity-text">Offer extended to candidate KH-2026-012</span>
+                <span class="activity-time">11:30</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-line"><div class="activity-dot ad-red"></div></div>
+                <span class="activity-text">Resignation notice received — Research dept.</span>
+                <span class="activity-time">14:05</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════ DIRECTORY ════ -->
+    <div id="panel-directory" class="hidden">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Employee Directory</div>
+          <div class="page-subtitle">25 employees · All departments · April 2026</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">↓ Export</button>
+          <button class="btn btn-primary" onclick="document.getElementById('modal-emp').classList.add('open')">+ Add Employee</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="search-row">
+          <input class="search-input" type="text" placeholder="Search name, ID, department…" id="emp-search" oninput="filterEmp()">
+          <select class="filter-select" id="dept-f" onchange="filterEmp()">
+            <option value="">All Departments</option>
+            <option>Accounting</option><option>Finance</option><option>Tax</option>
+            <option>Corporate</option><option>Management</option><option>Admin</option>
+          </select>
+          <select class="filter-select" id="status-f" onchange="filterEmp()">
+            <option value="">All Status</option>
+            <option>Active</option><option>On Leave</option><option>Probation</option>
+          </select>
+        </div>
+        <div class="panel">
+          <table class="data-table">
+            <thead><tr><th>No</th><th>Name</th><th>Email / Username</th><th>Department</th><th>Title</th><th>Join Date</th><th>Status</th><th>Perf.</th><th style="text-align:center">Actions</th></tr></thead>
+            <tbody id="emp-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ATTENDANCE ════ -->
+    <div id="panel-attendance" class="hidden">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Attendance & Leave</div>
+          <div class="page-subtitle">April 2026 · 96.4% overall attendance rate</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">↓ Report</button>
+          <button class="btn btn-primary" onclick="document.getElementById('modal-leave').classList.add('open')">+ Request Leave</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="kpi-row kpi-row-4">
+          <div class="kpi-card c-green"><div class="kpi-label">Present Today</div><div class="kpi-value">43</div><div class="kpi-change up">91.5% of team</div></div>
+          <div class="kpi-card c-gold"><div class="kpi-label">On Leave</div><div class="kpi-value">3</div><div class="kpi-change flat">Approved</div></div>
+          <div class="kpi-card c-red"><div class="kpi-label">Absent</div><div class="kpi-value">1</div><div class="kpi-change dn">Unexcused</div></div>
+          <div class="kpi-card c-blue"><div class="kpi-label">Leave Balance Avg</div><div class="kpi-value">8.4d</div><div class="kpi-change flat">Remaining</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Monthly Heatmap · April</span></div>
+            </div>
+            <div class="panel-body">
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px;">
+                <div class="hm-label">Mo</div><div class="hm-label">Tu</div><div class="hm-label">We</div>
+                <div class="hm-label">Th</div><div class="hm-label">Fr</div><div class="hm-label">Sa</div><div class="hm-label">Su</div>
+              </div>
+              <div class="hm-grid">
+                <div class="hm-cell hm-0">—</div><div class="hm-cell hm-full">47</div><div class="hm-cell hm-high">44</div><div class="hm-cell hm-full">46</div><div class="hm-cell hm-high">45</div><div class="hm-cell hm-0">—</div><div class="hm-cell hm-0">—</div>
+                <div class="hm-cell hm-full">46</div><div class="hm-cell hm-full">47</div><div class="hm-cell hm-leave">L3</div><div class="hm-cell hm-high">44</div><div class="hm-cell hm-full">46</div><div class="hm-cell hm-0">—</div><div class="hm-cell hm-0">—</div>
+                <div class="hm-cell hm-high">45</div><div class="hm-cell hm-full">46</div><div class="hm-cell hm-full">47</div><div class="hm-cell hm-full">47</div><div class="hm-cell hm-high">44</div><div class="hm-cell hm-0">—</div><div class="hm-cell hm-0">—</div>
+                <div class="hm-cell hm-full">46</div><div class="hm-cell hm-absent">A1</div><div class="hm-cell hm-high">44</div><div class="hm-cell hm-full">46</div><div class="hm-cell hm-full">47</div><div class="hm-cell hm-0">—</div><div class="hm-cell hm-0">—</div>
+              </div>
+              <div style="display:flex;gap:14px;margin-top:10px;font-size:9.5px;color:var(--ink-soft)">
+                <span><span style="color:var(--green)">■</span> Full attendance</span>
+                <span><span style="color:var(--gold)">■</span> Leave day</span>
+                <span><span style="color:var(--red)">■</span> Absent</span>
+                <span><span style="color:var(--ink-faint)">■</span> Weekend</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot" style="background:var(--gold)"></div><span class="panel-title">Pending Leave Requests</span></div>
+            </div>
+            <div class="panel-body">
+              <table class="data-table" id="leave-pending-table">
+                <thead><tr><th>Employee</th><th>Type</th><th>Dates</th><th>Days</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Leave Balance by Department</span></div>
+          </div>
+          <div class="panel-body">
+            <div class="bar-row"><span class="bar-label">Investment</span><div class="bar-track"><div class="bar-fill bf-green" style="width:60%"></div></div><span class="bar-val">9.2 d</span></div>
+            <div class="bar-row"><span class="bar-label">Research</span><div class="bar-track"><div class="bar-fill bf-blue" style="width:50%"></div></div><span class="bar-val">7.8 d</span></div>
+            <div class="bar-row"><span class="bar-label">Finance</span><div class="bar-track"><div class="bar-fill bf-amber" style="width:45%"></div></div><span class="bar-val">7.0 d</span></div>
+            <div class="bar-row"><span class="bar-label">Operations</span><div class="bar-track"><div class="bar-fill bf-teal" style="width:55%"></div></div><span class="bar-val">8.6 d</span></div>
+            <div class="bar-row"><span class="bar-label">IT / Tech</span><div class="bar-track"><div class="bar-fill bf-gold" style="width:70%"></div></div><span class="bar-val">11.0 d</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PAYROLL ════ -->
+    <div id="panel-payroll" class="hidden">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Payroll Summary</div>
+          <div class="page-subtitle">April 2026 · Total gross disbursement ฿6,524,700</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">↓ Export</button>
+          <button class="btn btn-gold">⊕ Run Payroll</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="kpi-row kpi-row-5">
+          <div class="kpi-card c-green"><div class="kpi-label">Gross Payroll</div><div class="kpi-value">฿6.5M</div><div class="kpi-change flat">Budget: ฿6.7M</div></div>
+          <div class="kpi-card c-gold"><div class="kpi-label">Net Disbursed</div><div class="kpi-value">฿5.5M</div><div class="kpi-change up">84.9% payout ratio</div></div>
+          <div class="kpi-card c-blue"><div class="kpi-label">Tax & Contributions</div><div class="kpi-value">฿980K</div><div class="kpi-change flat">15.0% effective</div></div>
+          <div class="kpi-card c-amber"><div class="kpi-label">Average Salary</div><div class="kpi-value">฿138,810</div><div class="kpi-change up">▲ +2.1% YoY</div></div>
+          <div class="kpi-card c-red"><div class="kpi-label">Bonuses Paid</div><div class="kpi-value">฿420K</div><div class="kpi-change flat">Q2 performance</div></div>
+        </div>
+        <div class="grid-65-35">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Payroll by Department</span></div>
+              <span class="panel-meta">April 2026</span>
+            </div>
+            <div class="panel-body">
+              <div class="payroll-row"><span class="payroll-dept">Investment</span><div class="payroll-bar"><div class="payroll-bar-fill" style="width:85%"></div></div><span class="payroll-pct">35%</span><span class="payroll-amount">฿2,284,000</span></div>
+              <div class="payroll-row"><span class="payroll-dept">Research</span><div class="payroll-bar"><div class="payroll-bar-fill" style="width:60%;background:var(--blue)"></div></div><span class="payroll-pct">25%</span><span class="payroll-amount">฿1,631,000</span></div>
+              <div class="payroll-row"><span class="payroll-dept">Operations</span><div class="payroll-bar"><div class="payroll-bar-fill" style="width:30%;background:var(--green-light)"></div></div><span class="payroll-pct">13%</span><span class="payroll-amount">฿849,000</span></div>
+              <div class="payroll-row"><span class="payroll-dept">Finance</span><div class="payroll-bar"><div class="payroll-bar-fill" style="width:25%;background:var(--amber)"></div></div><span class="payroll-pct">11%</span><span class="payroll-amount">฿718,000</span></div>
+              <div class="payroll-row"><span class="payroll-dept">IT / Tech</span><div class="payroll-bar"><div class="payroll-bar-fill" style="width:20%;background:var(--gold)"></div></div><span class="payroll-pct">9%</span><span class="payroll-amount">฿587,000</span></div>
+              <div class="payroll-row"><span class="payroll-dept">Admin</span><div class="payroll-bar"><div class="payroll-bar-fill" style="width:15%;background:var(--ink-faint)"></div></div><span class="payroll-pct">7%</span><span class="payroll-amount">฿457,000</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot" style="background:var(--gold)"></div><span class="panel-title">Cost Breakdown</span></div>
+            </div>
+            <div class="panel-body">
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:11px;color:var(--ink-mid)">Base Salary</span>
+                    <span style="font-family:var(--font-serif);font-size:14px;color:var(--green);font-weight:700">฿4.6M <span style="font-size:10px;color:var(--ink-faint)">71%</span></span>
+                  </div>
+                  <div style="height:8px;background:var(--green-xpale);border-radius:2px;overflow:hidden"><div style="width:71%;height:100%;background:var(--green);border-radius:2px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:11px;color:var(--ink-mid)">Benefits</span>
+                    <span style="font-family:var(--font-serif);font-size:14px;color:var(--blue);font-weight:700">฿770K <span style="font-size:10px;color:var(--ink-faint)">12%</span></span>
+                  </div>
+                  <div style="height:8px;background:var(--green-xpale);border-radius:2px;overflow:hidden"><div style="width:12%;height:100%;background:var(--blue);border-radius:2px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:11px;color:var(--ink-mid)">Taxes</span>
+                    <span style="font-family:var(--font-serif);font-size:14px;color:var(--amber);font-weight:700">฿700K <span style="font-size:10px;color:var(--ink-faint)">11%</span></span>
+                  </div>
+                  <div style="height:8px;background:var(--green-xpale);border-radius:2px;overflow:hidden"><div style="width:11%;height:100%;background:var(--amber);border-radius:2px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:11px;color:var(--ink-mid)">Bonuses</span>
+                    <span style="font-family:var(--font-serif);font-size:14px;color:var(--gold);font-weight:700">฿420K <span style="font-size:10px;color:var(--ink-faint)">6%</span></span>
+                  </div>
+                  <div style="height:8px;background:var(--green-xpale);border-radius:2px;overflow:hidden"><div style="width:6%;height:100%;background:var(--gold);border-radius:2px"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Individual Payroll · Top Earners</span></div>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead><tr><th>Employee</th><th>Department</th><th>Base Salary</th><th>Bonus</th><th>Deductions</th><th>Net Pay</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><div class="td-name"><div class="td-avatar av-green">NP</div>Nara Pich</div></td><td style="color:var(--ink-soft)">Investment</td><td>฿238,000</td><td style="color:var(--green)">+฿42,000</td><td style="color:var(--red)">−฿31,150</td><td><span style="font-family:var(--font-serif);font-size:15px;color:var(--green);font-weight:700">฿248,850</span></td><td><span class="tag tag-green">Paid</span></td></tr>
+                <tr><td><div class="td-name"><div class="td-avatar av-gold">SK</div>Sophal Kim</div></td><td style="color:var(--ink-soft)">Research</td><td>฿192,500</td><td style="color:var(--green)">+฿28,000</td><td style="color:var(--red)">−฿25,200</td><td><span style="font-family:var(--font-serif);font-size:15px;color:var(--green);font-weight:700">฿195,300</span></td><td><span class="tag tag-green">Paid</span></td></tr>
+                <tr><td><div class="td-name"><div class="td-avatar av-blue">DH</div>Dara Heng</div></td><td style="color:var(--ink-soft)">Finance</td><td>฿182,000</td><td style="color:var(--ink-faint)">—</td><td style="color:var(--red)">−฿23,660</td><td><span style="font-family:var(--font-serif);font-size:15px;color:var(--green);font-weight:700">฿158,340</span></td><td><span class="tag tag-green">Paid</span></td></tr>
+                <tr><td><div class="td-name"><div class="td-avatar av-amber">LM</div>Lina Meng</div></td><td style="color:var(--ink-soft)">Investment</td><td>฿175,000</td><td style="color:var(--green)">+฿17,500</td><td style="color:var(--red)">−฿22,750</td><td><span style="font-family:var(--font-serif);font-size:15px;color:var(--green);font-weight:700">฿169,750</span></td><td><span class="tag tag-gold">Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PERFORMANCE ════ -->
+    <div id="panel-performance" class="hidden">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Performance Reviews</div>
+          <div class="page-subtitle">Q2 2026 Cycle · 8 reviews pending · Average score 84.2</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">↓ Export</button>
+          <button class="btn btn-primary">+ New Review</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="kpi-row kpi-row-4">
+          <div class="kpi-card c-green"><div class="kpi-label">Average Score</div><div class="kpi-value">84.2</div><div class="kpi-change up">▲ +1.3 vs Q1</div></div>
+          <div class="kpi-card c-gold"><div class="kpi-label">Exceeds Target</div><div class="kpi-value">14</div><div class="kpi-change up">30% of team</div></div>
+          <div class="kpi-card c-blue"><div class="kpi-label">On Target</div><div class="kpi-value">27</div><div class="kpi-change flat">57% of team</div></div>
+          <div class="kpi-card c-red"><div class="kpi-label">Below Target</div><div class="kpi-value">6</div><div class="kpi-change dn">Needs attention</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">KPI Scores by Department</span></div>
+            </div>
+            <div class="panel-body">
+              <div class="bar-row"><span class="bar-label">Investment</span><div class="bar-track"><div class="bar-fill bf-green" style="width:91%"></div></div><span class="bar-val">91.2</span></div>
+              <div class="bar-row"><span class="bar-label">Research</span><div class="bar-track"><div class="bar-fill bf-blue" style="width:88%"></div></div><span class="bar-val">88.4</span></div>
+              <div class="bar-row"><span class="bar-label">Finance</span><div class="bar-track"><div class="bar-fill bf-gold" style="width:85%"></div></div><span class="bar-val">85.0</span></div>
+              <div class="bar-row"><span class="bar-label">IT / Tech</span><div class="bar-track"><div class="bar-fill bf-teal" style="width:80%"></div></div><span class="bar-val">80.3</span></div>
+              <div class="bar-row"><span class="bar-label">Operations</span><div class="bar-track"><div class="bar-fill bf-amber" style="width:77%"></div></div><span class="bar-val">77.1</span></div>
+              <div class="bar-row"><span class="bar-label">Admin</span><div class="bar-track"><div class="bar-fill bf-soft" style="width:73%"></div></div><span class="bar-val">73.6</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left"><div class="panel-head-dot" style="background:var(--gold)"></div><span class="panel-title">Review Status · Q2</span></div>
+            </div>
+            <div class="panel-body">
+              <table class="data-table">
+                <thead><tr><th>Employee</th><th>Score</th><th>Reviewer</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="td-name"><div class="td-avatar av-green">NP</div>Nara Pich</div></td><td><span style="font-family:var(--font-serif);font-size:16px;color:var(--green)">96</span></td><td style="color:var(--ink-soft)">Dir. Investment</td><td><span class="tag tag-green">Complete</span></td></tr>
+                  <tr><td><div class="td-name"><div class="td-avatar av-gold">SK</div>Sophal Kim</div></td><td><span style="font-family:var(--font-serif);font-size:16px;color:var(--gold)">93</span></td><td style="color:var(--ink-soft)">Head Research</td><td><span class="tag tag-green">Complete</span></td></tr>
+                  <tr><td><div class="td-name"><div class="td-avatar av-blue">DH</div>Dara Heng</div></td><td><span style="font-family:var(--font-serif);font-size:16px;color:var(--blue)">91</span></td><td style="color:var(--ink-soft)">CFO</td><td><span class="tag tag-green">Complete</span></td></tr>
+                  <tr><td><div class="td-name"><div class="td-avatar av-amber">LM</div>Lina Meng</div></td><td style="color:var(--ink-faint)">—</td><td style="color:var(--ink-soft)">Dir. Investment</td><td><span class="tag tag-gold">Pending</span></td></tr>
+                  <tr><td><div class="td-name"><div class="td-avatar av-teal">BR</div>Borey Rath</div></td><td style="color:var(--ink-faint)">—</td><td style="color:var(--ink-soft)">COO</td><td><span class="tag tag-gold">Pending</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Division KPIs · Investment Team</span></div>
+            <span class="panel-meta">Q2 2026</span>
+          </div>
+          <div class="panel-body">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+              <div style="background:var(--green-xpale);border:1px solid var(--border);border-radius:3px;padding:14px;">
+                <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px">Deal Pipeline</div>
+                <div style="font-family:var(--font-serif);font-size:26px;color:var(--green);font-weight:700">฿1.47B</div>
+                <div style="font-size:10px;color:var(--green-light);margin-top:4px">▲ +18% vs target</div>
+              </div>
+              <div style="background:var(--green-xpale);border:1px solid var(--border);border-radius:3px;padding:14px;">
+                <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px">Reports Delivered</div>
+                <div style="font-family:var(--font-serif);font-size:26px;color:var(--blue);font-weight:700">34/40</div>
+                <div style="font-size:10px;color:var(--gold);margin-top:4px">85% completion</div>
+              </div>
+              <div style="background:var(--green-xpale);border:1px solid var(--border);border-radius:3px;padding:14px;">
+                <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px">Client Satisfaction</div>
+                <div style="font-family:var(--font-serif);font-size:26px;color:var(--green);font-weight:700">4.7/5</div>
+                <div style="font-size:10px;color:var(--green-light);margin-top:4px">▲ +0.2 vs Q1</div>
+              </div>
+              <div style="background:var(--green-xpale);border:1px solid var(--border);border-radius:3px;padding:14px;">
+                <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px">Training Hours</div>
+                <div style="font-family:var(--font-serif);font-size:26px;color:var(--amber);font-weight:700">128h</div>
+                <div style="font-size:10px;color:var(--ink-faint);margin-top:4px">Avg 9.1h/person</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CHECK IN / OUT ════ -->
+    <div id="panel-checkin" class="hidden">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Check In / Out</div>
+          <div class="page-subtitle" id="ci-page-subtitle">Live attendance recording · Today</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost" onclick="exportAttCSV()">↓ Export CSV</button>
+          <button class="btn btn-primary" onclick="clearTodayAtt()">↺ Reset Today</button>
+        </div>
+      </div>
+      <div class="content">
+
+        <!-- STATS ROW -->
+        <div class="kpi-row kpi-row-4">
+          <div class="kpi-card c-green">
+            <div class="kpi-label">Checked In</div>
+            <div class="kpi-value" id="att-stat-in">0</div>
+            <div class="kpi-change up">Unique staff today</div>
+          </div>
+          <div class="kpi-card c-gold">
+            <div class="kpi-label">Checked Out</div>
+            <div class="kpi-value" id="att-stat-out">0</div>
+            <div class="kpi-change flat">Completed day</div>
+          </div>
+          <div class="kpi-card c-red">
+            <div class="kpi-label">Not Yet In</div>
+            <div class="kpi-value" id="att-stat-absent">25</div>
+            <div class="kpi-change dn">Still pending</div>
+          </div>
+          <div class="kpi-card c-blue">
+            <div class="kpi-label">Attendance Rate</div>
+            <div class="kpi-value" id="att-stat-rate">0%</div>
+            <div class="kpi-change flat">Of 25 staff</div>
+          </div>
+        </div>
+
+        <div class="grid-65-35">
+
+          <!-- CHECK-IN FORM -->
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-head-dot"></div>
+                <span class="panel-title">Record Attendance</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite"></div>
+                <span class="panel-meta">Live</span>
+              </div>
+            </div>
+            <div class="panel-body">
+              <!-- Mini clock -->
+              <div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                <div style="font-family:var(--font-serif);font-size:44px;font-weight:700;color:var(--green);line-height:1;letter-spacing:-1px" id="ci-big-clock">00:00:00</div>
+                <div style="font-size:10px;color:var(--ink-faint);letter-spacing:2px;text-transform:uppercase;margin-top:4px" id="ci-big-date"></div>
+              </div>
+
+              <!-- Staff select -->
+              <div class="form-row">
+                <label class="form-label">Staff Name</label>
+                <select class="form-select" id="ci-name-select" onchange="ciCheckDup()">
+                  <option value="">— Select name —</option>
+                  <option>Thawtar</option><option>Kaythi</option><option>Nay Lin Oo</option>
+                  <option>Khine</option><option>Wai Yan Phyo</option><option>Htet Htet Hlaing</option>
+                  <option>Ohnmaraung</option><option>Aye Phyo</option><option>Zar Ni</option>
+                  <option>Tin Min Htut</option><option>Hein Zaw Zaw Myint</option><option>Tris</option>
+                  <option>Lwin Lwin Kyaw</option><option>Moh Moh</option><option>Info</option>
+                  <option>Aye Myat Tun</option><option>Hnin Nandar Win</option><option>Pyae Phyo Kyaw</option>
+                  <option>Thet Mon</option><option>Chotika Sianglue</option><option>Thurein</option>
+                  <option>Wynearkarkyaw</option><option>Grace</option><option>Patty</option><option>Zurahnin</option>
+                </select>
+              </div>
+
+              <!-- Type toggle -->
+              <div class="form-row">
+                <label class="form-label">Check Type</label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px">
+                  <button id="ci-btn-in" onclick="ciSetType('in')"
+                    style="padding:11px;border-radius:8px;border:1.5px solid var(--green);background:var(--green);color:#fff;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s">
+                    ☀️ Check In
+                  </button>
+                  <button id="ci-btn-out" onclick="ciSetType('out')"
+                    style="padding:11px;border-radius:8px;border:1.5px solid var(--border);background:var(--green-xpale);color:var(--ink-soft);font-family:var(--font-sans);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s">
+                    🌙 Check Out
+                  </button>
+                </div>
+              </div>
+
+              <!-- Duplicate warning -->
+              <div id="ci-dup-warn" style="display:none;background:var(--amber-pale);border:1px solid #e8d0a0;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--amber);font-weight:500;text-align:center;"></div>
+
+              <!-- Submit -->
+              <button id="ci-submit-btn" class="btn btn-primary" style="width:100%;padding:13px;font-family:var(--font-serif);font-size:16px;font-weight:700;border-radius:8px;letter-spacing:0.3px" onclick="ciSubmit()">
+                Record Check-In
+              </button>
+
+              <!-- Success flash -->
+              <div id="ci-success-flash" style="display:none;background:var(--green-pale);border:1px solid var(--border-dark);border-radius:8px;padding:14px;margin-top:12px;text-align:center;animation:fadeSlideIn 0.3s ease">
+                <div style="font-size:24px;margin-bottom:4px" id="ci-flash-icon">✅</div>
+                <div style="font-family:var(--font-serif);font-size:17px;font-weight:700;color:var(--green)" id="ci-flash-name"></div>
+                <div style="font-size:12px;color:var(--ink-soft);margin-top:2px" id="ci-flash-msg"></div>
+                <div style="font-family:var(--font-serif);font-size:26px;font-weight:700;color:var(--ink);margin-top:4px" id="ci-flash-time"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODAY LOG -->
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-head-left">
+                <div class="panel-head-dot" style="background:var(--gold)"></div>
+                <span class="panel-title">Today's Log</span>
+              </div>
+              <span class="panel-meta" id="ci-log-meta">0 records</span>
+            </div>
+            <div class="panel-body" style="padding:10px 12px;max-height:420px;overflow-y:auto">
+              <div id="ci-log-list"><div style="text-align:center;padding:20px;color:var(--ink-faint);font-size:12px">No records yet today.</div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FULL ATTENDANCE TABLE -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-head-left"><div class="panel-head-dot"></div><span class="panel-title">Staff Status · Today</span></div>
+            <span class="panel-meta">All 25 staff</span>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead><tr><th>Name</th><th>Check In</th><th>Check Out</th><th>Status</th></tr></thead>
+              <tbody id="ci-full-table"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════ RECRUITMENT ════ -->
+  </main>
+</div>
+
+<!-- MODAL: Add Employee -->
+<div class="modal-overlay" id="modal-emp">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add New Employee</span>
+      <button class="modal-close" onclick="document.getElementById('modal-emp').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-row"><label class="form-label">First Name</label><input class="form-input" id="add-fname" type="text" placeholder="Given name"></div>
+        <div class="form-row"><label class="form-label">Last Name</label><input class="form-input" id="add-lname" type="text" placeholder="Family name"></div>
+      </div>
+      <div class="form-row"><label class="form-label">Email Address</label><input class="form-input" id="add-email" type="email" placeholder="name@banyan.asia"></div>
+      <div class="form-grid">
+        <div class="form-row"><label class="form-label">Department</label>
+          <select class="form-select" id="add-dept">
+            <option>Accounting</option><option>Finance</option><option>Tax</option>
+            <option>Corporate</option><option>Management</option><option>Admin</option>
+          </select>
+        </div>
+        <div class="form-row"><label class="form-label">Job Title</label><input class="form-input" id="add-title" type="text" placeholder="e.g. Senior Analyst"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label class="form-label">Join Date</label><input class="form-input" id="add-join" type="date"></div>
+        <div class="form-row"><label class="form-label">Employment Status</label>
+          <select class="form-select" id="add-status"><option>Active</option><option>Probation</option><option>On Leave</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('modal-emp').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitAddEmployee()">Add Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Edit Employee -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Edit Employee Profile</span>
+      <button class="modal-close" onclick="document.getElementById('modal-edit').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id">
+      <div class="form-row"><label class="form-label">Full Name</label><input class="form-input" id="edit-name" type="text" placeholder="Full name"></div>
+      <div class="form-row"><label class="form-label">Email Address</label><input class="form-input" id="edit-email" type="email" placeholder="name@banyan.asia"></div>
+      <div class="form-grid">
+        <div class="form-row"><label class="form-label">Department</label>
+          <select class="form-select" id="edit-dept">
+            <option>Accounting</option><option>Finance</option><option>Tax</option>
+            <option>Corporate</option><option>Management</option><option>Admin</option>
+          </select>
+        </div>
+        <div class="form-row"><label class="form-label">Job Title</label><input class="form-input" id="edit-title" type="text" placeholder="e.g. Senior Analyst"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label class="form-label">Join Date</label><input class="form-input" id="edit-join" type="date"></div>
+        <div class="form-row"><label class="form-label">Status</label>
+          <select class="form-select" id="edit-status">
+            <option>Active</option><option>Probation</option><option>On Leave</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Performance Score <span id="edit-perf-display" style="color:var(--green);font-family:var(--font-serif);font-size:16px;margin-left:8px"></span></label>
+        <input type="range" id="edit-perf" min="0" max="100" step="1"
+          style="width:100%;accent-color:var(--green);margin-top:4px"
+          oninput="document.getElementById('edit-perf-display').textContent=this.value">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('modal-edit').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitEditEmployee()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Leave Request -->
+<div class="modal-overlay" id="modal-leave">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Submit Leave Request</span>
+      <button class="modal-close" onclick="document.getElementById('modal-leave').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">Employee Name</label>
+        <select class="form-select" id="leave-emp">
+          <option value="">— Select employee —</option>
+          <option>Thawtar</option><option>Kaythi</option><option>Nay Lin Oo</option>
+          <option>Khine</option><option>Wai Yan Phyo</option><option>Htet Htet Hlaing</option>
+          <option>Ohnmaraung</option><option>Aye Phyo</option><option>Zar Ni</option>
+          <option>Tin Min Htut</option><option>Hein Zaw Zaw Myint</option><option>Tris</option>
+          <option>Lwin Lwin Kyaw</option><option>Moh Moh</option><option>Info</option>
+          <option>Aye Myat Tun</option><option>Hnin Nandar Win</option><option>Pyae Phyo Kyaw</option>
+          <option>Thet Mon</option><option>Chotika Sianglue</option><option>Thurein</option>
+          <option>Wynearkarkyaw</option><option>Grace</option><option>Patty</option><option>Zurahnin</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Leave Type</label>
+        <select class="form-select" id="leave-type">
+          <option>Annual Leave</option>
+          <option>Medical Leave</option>
+          <option>Emergency Leave</option>
+          <option>Unpaid Leave</option>
+          <option>Maternity / Paternity Leave</option>
+        </select>
+      </div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="form-label">From Date</label>
+          <input class="form-input" type="date" id="leave-from" oninput="calcDays()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">To Date</label>
+          <input class="form-input" type="date" id="leave-to" oninput="calcDays()">
+        </div>
+      </div>
+      <div id="leave-days-display" style="display:none;background:var(--green-xpale);border:1px solid var(--border);border-radius:3px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:11px;color:var(--ink-soft)">Duration:</span>
+        <span id="leave-days-count" style="font-family:var(--font-serif);font-size:20px;color:var(--green);font-weight:700">0</span>
+        <span style="font-size:11px;color:var(--ink-soft)">working day(s)</span>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Reason / Notes (optional)</label>
+        <input class="form-input" type="text" id="leave-reason" placeholder="e.g. Family trip, medical appointment…">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('modal-leave').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitLeave()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Leave Success Toast -->
+<div id="leave-toast" style="display:none;position:fixed;bottom:28px;right:28px;z-index:300;background:var(--green);color:#fff;padding:14px 20px;border-radius:3px;box-shadow:var(--shadow-lg);font-size:12px;font-family:var(--font-sans);max-width:320px;line-height:1.5;">
+  ✓ <span id="leave-toast-msg"></span>
+</div>
+
+<!-- MODAL: Post Role -->
+
+<script>
+// Clock
+function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('en-GB', { hour12: false });
+}
+setInterval(tick, 1000); tick();
+
+// Navigation
+function showPanel(name, el) {
+  document.querySelectorAll('[id^="panel-"]').forEach(p => p.classList.add('hidden'));
+  document.getElementById('panel-' + name).classList.remove('hidden');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Employee data — Banyan Partners (real staff)
+const employees = [
+  { id:'EMP-001', initials:'TH', cls:'av-green', name:'Thawtar',             email:'thawtar@banyan.asia',           dept:'Accounting',  title:'Accounting Associate',      join:'2022-01-01', status:'Active',    perf:88 },
+  { id:'EMP-002', initials:'KT', cls:'av-gold',  name:'Kaythi',              email:'kaythi@banyan.asia',            dept:'Accounting',  title:'Accounting Associate',      join:'2022-01-01', status:'Active',    perf:85 },
+  { id:'EMP-003', initials:'NL', cls:'av-blue',  name:'Nay Lin Oo',          email:'naylin.oo@banyan.asia',         dept:'Accounting',  title:'Accounting Executive',      join:'2022-03-01', status:'Active',    perf:90 },
+  { id:'EMP-004', initials:'KH', cls:'av-amber', name:'Khine',               email:'khine@banyan.asia',             dept:'Finance',     title:'Finance Executive',         join:'2022-03-01', status:'Active',    perf:83 },
+  { id:'EMP-005', initials:'WY', cls:'av-teal',  name:'Wai Yan Phyo',        email:'waiyanphyoe@banyan.asia',       dept:'Finance',     title:'Finance Analyst',           join:'2022-06-01', status:'Active',    perf:87 },
+  { id:'EMP-006', initials:'HH', cls:'av-green', name:'Htet Htet Hlaing',    email:'htethethlainq@banyan.asia',     dept:'Tax',         title:'Tax Executive',             join:'2022-06-01', status:'Active',    perf:84 },
+  { id:'EMP-007', initials:'OH', cls:'av-gold',  name:'Ohnmaraung',          email:'ohnmaraunq@banyan.asia',        dept:'Tax',         title:'Tax Associate',             join:'2022-09-01', status:'Active',    perf:81 },
+  { id:'EMP-008', initials:'AP', cls:'av-blue',  name:'Aye Phyo',            email:'ayephyo@banyan.asia',           dept:'Accounting',  title:'Accounting Associate',      join:'2022-09-01', status:'Active',    perf:79 },
+  { id:'EMP-009', initials:'ZN', cls:'av-amber', name:'Zar Ni',              email:'zarni@banyan.asia',             dept:'Accounting',  title:'Accounting Executive',      join:'2022-09-01', status:'Active',    perf:86 },
+  { id:'EMP-010', initials:'TM', cls:'av-green', name:'Tin Min Htut',        email:'tinmin.htut@banyan.asia',       dept:'Management',  title:'Managing Partner',          join:'2022-01-01', status:'Active',    perf:96 },
+  { id:'EMP-011', initials:'HZ', cls:'av-teal',  name:'Hein Zaw Zaw Myint',  email:'heinzawzawmyint@banyan.asia',   dept:'Corporate',   title:'Corporate Services Exec',   join:'2022-09-01', status:'Active',    perf:82 },
+  { id:'EMP-012', initials:'TR', cls:'av-gold',  name:'Tris',                email:'trismyo@banyan.asia',           dept:'Accounting',  title:'Accounting Associate',      join:'2023-01-01', status:'Active',    perf:78 },
+  { id:'EMP-013', initials:'LK', cls:'av-blue',  name:'Lwin Lwin Kyaw',      email:'lwinlwinkyaw@banyan.asia',      dept:'Accounting',  title:'Accounting Executive',      join:'2023-01-01', status:'Active',    perf:84 },
+  { id:'EMP-014', initials:'MM', cls:'av-amber', name:'Moh Moh',             email:'mohmoh@banyan.asia',            dept:'Admin',       title:'Admin Coordinator',         join:'2023-03-01', status:'Active',    perf:80 },
+  { id:'EMP-015', initials:'IN', cls:'av-green', name:'Info',                email:'info@banyan.asia',              dept:'Admin',       title:'Information Officer',        join:'2022-01-01', status:'Active',    perf:75 },
+  { id:'EMP-016', initials:'AM', cls:'av-teal',  name:'Aye Myat Tun',        email:'ayemyattun@banyan.asia',        dept:'Tax',         title:'Tax Executive',             join:'2023-03-01', status:'Active',    perf:86 },
+  { id:'EMP-017', initials:'HN', cls:'av-gold',  name:'Hnin Nandar Win',     email:'hninnandarwin@banyan.asia',     dept:'Finance',     title:'Finance Executive',         join:'2023-06-01', status:'Active',    perf:88 },
+  { id:'EMP-018', initials:'PK', cls:'av-blue',  name:'Pyae Phyo Kyaw',      email:'pyaephyokyaw@banyan.asia',      dept:'Corporate',   title:'Corporate Services Exec',   join:'2023-06-01', status:'Active',    perf:83 },
+  { id:'EMP-019', initials:'TT', cls:'av-amber', name:'Thet Mon',            email:'thetmon@banyan.asia',           dept:'Accounting',  title:'Accounting Associate',      join:'2023-09-01', status:'Active',    perf:77 },
+  { id:'EMP-020', initials:'CS', cls:'av-green', name:'Chotika Sianglue',    email:'chotika@banyan.asia',           dept:'Finance',     title:'Finance Analyst',           join:'2023-09-01', status:'Active',    perf:85 },
+  { id:'EMP-021', initials:'TU', cls:'av-teal',  name:'Thurein',             email:'thurein@banyan.asia',           dept:'Tax',         title:'Tax Associate',             join:'2023-09-01', status:'Probation', perf:74 },
+  { id:'EMP-022', initials:'WK', cls:'av-gold',  name:'Wynearkarkyaw',       email:'wynearkarkyaw@banyan.asia',     dept:'Corporate',   title:'Corporate Services Exec',   join:'2023-12-01', status:'Active',    perf:81 },
+  { id:'EMP-023', initials:'GR', cls:'av-blue',  name:'Grace',               email:'grace@banyan.asia',             dept:'Admin',       title:'Admin Executive',           join:'2024-01-01', status:'Active',    perf:79 },
+  { id:'EMP-024', initials:'PT', cls:'av-amber', name:'Patty',               email:'patty@banyan.asia',             dept:'Accounting',  title:'Accounting Associate',      join:'2024-01-01', status:'Probation', perf:72 },
+  { id:'EMP-025', initials:'ZR', cls:'av-green', name:'Zurahnin',            email:'zurahnin@banyan.asia',          dept:'Tax',         title:'Tax Associate',             join:'2024-03-01', status:'Probation', perf:70 },
+];
+
+const statusTag = { 'Active':'tag-green','On Leave':'tag-gold','Probation':'tag-blue' };
+
+function getInitials(name) {
+  return name.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+}
+const avatarClasses = ['av-green','av-gold','av-blue','av-amber','av-teal'];
+
+function renderEmp(data) {
+  document.getElementById('emp-tbody').innerHTML = data.length === 0
+    ? `<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--ink-faint)">No employees found.</td></tr>`
+    : data.map((e, i) => `
+    <tr id="emp-row-${e.id}">
+      <td style="color:var(--ink-faint);font-size:11px;text-align:center">${i+1}</td>
+      <td><div class="td-name"><div class="td-avatar ${e.cls}">${e.initials}</div><span style="font-weight:500">${e.name}</span></div></td>
+      <td style="color:var(--blue);font-size:11px">${e.email}</td>
+      <td style="color:var(--ink-soft)">${e.dept}</td>
+      <td style="color:var(--ink-soft)">${e.title}</td>
+      <td style="color:var(--ink-faint)">${e.join}</td>
+      <td><span class="tag ${statusTag[e.status]}">${e.status}</span></td>
+      <td><span style="font-family:var(--font-serif);font-size:16px;color:${e.perf>=90?'var(--green)':e.perf>=80?'var(--gold)':'var(--ink-soft)'};font-weight:${e.perf>=90?500:400}">${e.perf}</span></td>
+      <td style="text-align:center;white-space:nowrap">
+        <button class="btn btn-ghost" style="padding:3px 9px;font-size:10px;margin-right:4px" onclick="openEditModal('${e.id}')">✏ Edit</button>
+        <button class="btn" style="padding:3px 9px;font-size:10px;color:var(--red);border-color:#e8c4be" onclick="deleteEmployee('${e.id}')">✕</button>
+      </td>
+    </tr>
+  `).join('');
+}
+renderEmp(employees);
+
+function filterEmp() {
+  const q = document.getElementById('emp-search').value.toLowerCase();
+  const d = document.getElementById('dept-f').value;
+  const s = document.getElementById('status-f').value;
+  renderEmp(employees.filter(e =>
+    (!q || e.name.toLowerCase().includes(q) || e.id.includes(q) || e.dept.toLowerCase().includes(q) || e.email.toLowerCase().includes(q)) &&
+    (!d || e.dept === d) && (!s || e.status === s)
+  ));
+}
+
+// ── ADD EMPLOYEE ──
+function submitAddEmployee() {
+  const fname  = document.getElementById('add-fname').value.trim();
+  const lname  = document.getElementById('add-lname').value.trim();
+  const email  = document.getElementById('add-email').value.trim();
+  const dept   = document.getElementById('add-dept').value;
+  const title  = document.getElementById('add-title').value.trim();
+  const join   = document.getElementById('add-join').value;
+  const status = document.getElementById('add-status').value;
+  if (!fname || !lname) { alert('Please enter the employee name.'); return; }
+  if (!email)           { alert('Please enter an email address.'); return; }
+  if (!join)            { alert('Please select a join date.'); return; }
+  const name = fname + ' ' + lname;
+  const newId = 'EMP-' + String(employees.length + 1).padStart(3,'0');
+  const cls = avatarClasses[employees.length % avatarClasses.length];
+  employees.push({ id: newId, initials: getInitials(name), cls, name, email, dept, title: title||'Staff', join, status, perf: 75 });
+  renderEmp(employees);
+  updateHeadcount();
+  document.getElementById('modal-emp').classList.remove('open');
+  showToast(`${name} has been added to the directory.`);
+  ['add-fname','add-lname','add-email','add-title','add-join'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ── EDIT EMPLOYEE ──
+function openEditModal(id) {
+  const e = employees.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('edit-id').value    = id;
+  document.getElementById('edit-name').value  = e.name;
+  document.getElementById('edit-email').value = e.email;
+  document.getElementById('edit-dept').value  = e.dept;
+  document.getElementById('edit-title').value = e.title;
+  document.getElementById('edit-join').value  = e.join;
+  document.getElementById('edit-status').value= e.status;
+  document.getElementById('edit-perf').value  = e.perf;
+  document.getElementById('modal-edit').classList.add('open');
+}
+
+function submitEditEmployee() {
+  const id     = document.getElementById('edit-id').value;
+  const idx    = employees.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  const name   = document.getElementById('edit-name').value.trim();
+  const email  = document.getElementById('edit-email').value.trim();
+  const dept   = document.getElementById('edit-dept').value;
+  const title  = document.getElementById('edit-title').value.trim();
+  const join   = document.getElementById('edit-join').value;
+  const status = document.getElementById('edit-status').value;
+  const perf   = parseInt(document.getElementById('edit-perf').value) || 75;
+  if (!name)  { alert('Name cannot be empty.'); return; }
+  if (!email) { alert('Email cannot be empty.'); return; }
+  employees[idx] = { ...employees[idx], name, initials: getInitials(name), email, dept, title, join, status, perf };
+  renderEmp(employees);
+  document.getElementById('modal-edit').classList.remove('open');
+  showToast(`${name}'s profile has been updated.`);
+}
+
+// ── DELETE EMPLOYEE ──
+function deleteEmployee(id) {
+  const e = employees.find(x => x.id === id);
+  if (!e) return;
+  if (!confirm(`Remove ${e.name} from the directory?`)) return;
+  const idx = employees.findIndex(x => x.id === id);
+  employees.splice(idx, 1);
+  renderEmp(employees);
+  updateHeadcount();
+  showToast(`${e.name} has been removed.`);
+}
+
+function updateHeadcount() {
+  const el = document.querySelector('.nav-stat-val');
+  if (el) el.textContent = employees.length;
+  const sub = document.querySelector('#panel-directory .page-subtitle');
+  if (sub) sub.textContent = `${employees.length} employees · All departments · April 2026`;
+  const sb = document.getElementById('sidebar-headcount');
+  if (sb) sb.textContent = employees.length;
+}
+
+// ── LEAVE REQUEST LOGIC ──
+function calcDays() {
+  const f = document.getElementById('leave-from').value;
+  const t = document.getElementById('leave-to').value;
+  const display = document.getElementById('leave-days-display');
+  if (!f || !t) { display.style.display = 'none'; return; }
+  const from = new Date(f), to = new Date(t);
+  if (to < from) { display.style.display = 'none'; return; }
+  let days = 0;
+  let cur = new Date(from);
+  while (cur <= to) {
+    const d = cur.getDay();
+    if (d !== 0 && d !== 6) days++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  document.getElementById('leave-days-count').textContent = days;
+  display.style.display = 'flex';
+}
+
+// Pending leave log (in-memory)
+const leaveLog = [
+  { name:'Chan Dara',    type:'Annual Leave',  from:'2026-04-14', to:'2026-04-18', days:5, status:'Pending' },
+  { name:'Maly Ros',     type:'Medical Leave', from:'2026-04-10', to:'2026-04-11', days:2, status:'Pending' },
+  { name:'Bora Vann',    type:'Annual Leave',  from:'2026-04-22', to:'2026-04-25', days:4, status:'Pending' },
+];
+
+function renderLeaveLog() {
+  const tbody = document.querySelector('#leave-pending-table tbody');
+  if (!tbody) return;
+  tbody.innerHTML = leaveLog.map(r => `
+    <tr>
+      <td><div class="td-name"><div class="td-avatar av-green">${r.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>${r.name}</div></td>
+      <td>${r.type}</td>
+      <td style="color:var(--ink-soft)">${r.from} → ${r.to}</td>
+      <td style="text-align:center;font-family:var(--font-serif);font-size:16px;color:var(--green)">${r.days}</td>
+      <td><button class="btn btn-primary" style="padding:4px 10px;font-size:10px" onclick="approveLeave(this,'${r.name}')">Approve</button></td>
+    </tr>
+  `).join('');
+}
+
+function approveLeave(btn, name) {
+  const row = btn.closest('tr');
+  row.style.opacity = '0.4';
+  btn.textContent = '✓ Approved';
+  btn.disabled = true;
+  showToast(`${name}'s leave has been approved.`);
+}
+
+function submitLeave() {
+  const emp    = document.getElementById('leave-emp').value;
+  const type   = document.getElementById('leave-type').value;
+  const from   = document.getElementById('leave-from').value;
+  const to     = document.getElementById('leave-to').value;
+  const days   = parseInt(document.getElementById('leave-days-count').textContent) || 0;
+  const reason = document.getElementById('leave-reason').value;
+
+  if (!emp)  { alert('Please select an employee.'); return; }
+  if (!from) { alert('Please select a start date.'); return; }
+  if (!to)   { alert('Please select an end date.'); return; }
+  if (days < 1) { alert('End date must be after start date.'); return; }
+
+  leaveLog.unshift({ name: emp, type, from, to, days, status: 'Pending' });
+  renderLeaveLog();
+
+  document.getElementById('modal-leave').classList.remove('open');
+  showToast(`Leave request for ${emp} submitted — ${days} day(s) pending approval.`);
+
+  // Reset form
+  document.getElementById('leave-emp').value = '';
+  document.getElementById('leave-from').value = '';
+  document.getElementById('leave-to').value = '';
+  document.getElementById('leave-reason').value = '';
+  document.getElementById('leave-days-display').style.display = 'none';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('leave-toast');
+  document.getElementById('leave-toast-msg').textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 4000);
+}
+
+renderLeaveLog();
+
+// Close modals on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); })
+);
+
+// ══════════════════════════════════════════════
+// CHECK-IN / CHECK-OUT SYSTEM
+// ══════════════════════════════════════════════
+const ATT_KEY = 'banyan_att_' + new Date().toISOString().slice(0,10);
+let ciCurrentType = 'in';
+
+const ALL_STAFF = [
+  'Thawtar','Kaythi','Nay Lin Oo','Khine','Wai Yan Phyo',
+  'Htet Htet Hlaing','Ohnmaraung','Aye Phyo','Zar Ni','Tin Min Htut',
+  'Hein Zaw Zaw Myint','Tris','Lwin Lwin Kyaw','Moh Moh','Info',
+  'Aye Myat Tun','Hnin Nandar Win','Pyae Phyo Kyaw','Thet Mon',
+  'Chotika Sianglue','Thurein','Wynearkarkyaw','Grace','Patty','Zurahnin'
+];
+
+function attLoad(){ try{ return JSON.parse(localStorage.getItem(ATT_KEY))||[]; }catch{ return []; } }
+function attSave(r){ localStorage.setItem(ATT_KEY, JSON.stringify(r)); }
+
+// ── Clock inside check-in panel ──
+function ciTickClock(){
+  const now = new Date();
+  const cl = document.getElementById('ci-big-clock');
+  const dl = document.getElementById('ci-big-date');
+  const ps = document.getElementById('ci-page-subtitle');
+  if(cl) cl.textContent = now.toLocaleTimeString('en-GB',{hour12:false});
+  if(dl) dl.textContent = now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  if(ps) ps.textContent = 'Live attendance · ' + now.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(ciTickClock, 1000); ciTickClock();
+
+// ── Type toggle ──
+function ciSetType(type){
+  ciCurrentType = type;
+  const btnIn  = document.getElementById('ci-btn-in');
+  const btnOut = document.getElementById('ci-btn-out');
+  const sub    = document.getElementById('ci-submit-btn');
+  if(!btnIn) return;
+  if(type === 'in'){
+    btnIn.style.cssText  = 'padding:11px;border-radius:8px;border:1.5px solid var(--green);background:var(--green);color:#fff;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s';
+    btnOut.style.cssText = 'padding:11px;border-radius:8px;border:1.5px solid var(--border);background:var(--green-xpale);color:var(--ink-soft);font-family:var(--font-sans);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s';
+    sub.textContent = 'Record Check-In';
+    sub.className = 'btn btn-primary';
+    sub.style.cssText = 'width:100%;padding:13px;font-family:var(--font-serif);font-size:16px;font-weight:700;border-radius:8px;letter-spacing:0.3px';
+  } else {
+    btnIn.style.cssText  = 'padding:11px;border-radius:8px;border:1.5px solid var(--border);background:var(--green-xpale);color:var(--ink-soft);font-family:var(--font-sans);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s';
+    btnOut.style.cssText = 'padding:11px;border-radius:8px;border:1.5px solid var(--gold);background:var(--gold);color:#fff;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s';
+    sub.textContent = 'Record Check-Out';
+    sub.className = 'btn btn-gold';
+    sub.style.cssText = 'width:100%;padding:13px;font-family:var(--font-serif);font-size:16px;font-weight:700;border-radius:8px;letter-spacing:0.3px';
+  }
+  ciCheckDup();
+}
+
+// ── Duplicate warning ──
+function ciCheckDup(){
+  const name = document.getElementById('ci-name-select').value;
+  const warn = document.getElementById('ci-dup-warn');
+  const sub  = document.getElementById('ci-submit-btn');
+  if(!name){ warn.style.display='none'; sub.disabled=false; return; }
+  const ex = attLoad().find(r => r.name===name && r.type===ciCurrentType);
+  if(ex){
+    warn.style.display='block';
+    warn.textContent = `⚠ ${name} already ${ciCurrentType==='in'?'checked in':'checked out'} at ${ex.time}`;
+    sub.disabled=true;
+  } else {
+    warn.style.display='none';
+    sub.disabled=false;
+  }
+}
+
+// ── Submit ──
+function ciSubmit(){
+  const name = document.getElementById('ci-name-select').value;
+  if(!name){ alert('Please select a staff name.'); return; }
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  const rec = { name, type:ciCurrentType, time:timeStr, timestamp:now.getTime() };
+  const recs = attLoad(); recs.unshift(rec); attSave(recs);
+
+  // Show flash
+  const isIn = ciCurrentType==='in';
+  const flash = document.getElementById('ci-success-flash');
+  flash.style.background = isIn ? 'var(--green-pale)' : '#fdf6e3';
+  flash.style.borderColor = isIn ? 'var(--border-dark)' : '#e8d9a0';
+  document.getElementById('ci-flash-icon').textContent  = isIn ? '✅' : '👋';
+  document.getElementById('ci-flash-name').textContent  = name;
+  document.getElementById('ci-flash-name').style.color = isIn ? 'var(--green)' : 'var(--gold)';
+  document.getElementById('ci-flash-msg').textContent   = isIn ? 'Successfully checked in at' : 'Successfully checked out at';
+  document.getElementById('ci-flash-time').textContent  = timeStr;
+  flash.style.display = 'block';
+  setTimeout(() => { flash.style.display='none'; }, 4000);
+
+  // Reset select
+  document.getElementById('ci-name-select').value = '';
+  document.getElementById('ci-dup-warn').style.display = 'none';
+  document.getElementById('ci-submit-btn').disabled = false;
+
+  ciRenderAll();
+}
+
+// ── Render log (right panel) ──
+function ciRenderLog(){
+  const recs = attLoad();
+  const meta = document.getElementById('ci-log-meta');
+  const list = document.getElementById('ci-log-list');
+  if(meta) meta.textContent = `${recs.length} record${recs.length!==1?'s':''}`;
+  if(!list) return;
+  if(!recs.length){
+    list.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink-faint);font-size:12px">No records yet today.</div>';
+    return;
+  }
+  list.innerHTML = recs.map(r => {
+    const init = r.name.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const isIn = r.type==='in';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;margin-bottom:5px;background:${isIn?'var(--green-xpale)':'#fdf6e3'};border:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:26px;height:26px;border-radius:50%;background:${isIn?'var(--green)':'var(--gold)'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">${init}</div>
+        <div>
+          <div style="font-size:12px;font-weight:500;color:var(--ink)">${r.name} <span style="display:inline-block;font-size:9px;font-weight:600;padding:1px 6px;border-radius:20px;background:${isIn?'var(--green-pale)':'#fdf6e3'};color:${isIn?'var(--green)':'var(--gold)'};border:1px solid ${isIn?'#c8ddd5':'#e8d9a0'}">${isIn?'IN':'OUT'}</span></div>
+          <div style="font-size:10px;color:var(--ink-soft)">${isIn?'Checked in':'Checked out'}</div>
+        </div>
+      </div>
+      <div style="font-family:var(--font-serif);font-size:13px;font-weight:700;color:${isIn?'var(--green)':'var(--gold)'}">${r.time}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Render full staff table ──
+function ciRenderFullTable(){
+  const recs = attLoad();
+  const tbody = document.getElementById('ci-full-table');
+  if(!tbody) return;
+  const inMap  = {};
+  const outMap = {};
+  recs.forEach(r => {
+    if(r.type==='in'  && !inMap[r.name])  inMap[r.name]  = r.time;
+    if(r.type==='out' && !outMap[r.name]) outMap[r.name] = r.time;
+  });
+  tbody.innerHTML = ALL_STAFF.map(name => {
+    const inTime  = inMap[name]  || null;
+    const outTime = outMap[name] || null;
+    let statusHtml, rowBg = '';
+    if(inTime && outTime){
+      statusHtml = `<span class="tag tag-green">Complete</span>`;
+      rowBg = '';
+    } else if(inTime){
+      statusHtml = `<span class="tag tag-blue">In Office</span>`;
+    } else {
+      statusHtml = `<span class="tag tag-gold">Not Yet In</span>`;
+    }
+    return `<tr style="${rowBg}">
+      <td style="font-weight:500">${name}</td>
+      <td style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:${inTime?'var(--green)':'var(--ink-faint)'}">${inTime||'—'}</td>
+      <td style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:${outTime?'var(--gold)':'var(--ink-faint)'}">${outTime||'—'}</td>
+      <td>${statusHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Render KPI stats ──
+function ciRenderStats(){
+  const recs = attLoad();
+  const uniqueIn  = [...new Set(recs.filter(r=>r.type==='in').map(r=>r.name))].length;
+  const uniqueOut = [...new Set(recs.filter(r=>r.type==='out').map(r=>r.name))].length;
+  const absent    = Math.max(0, 25 - uniqueIn);
+  const rate      = Math.round((uniqueIn/25)*100);
+  const si = document.getElementById('att-stat-in');
+  const so = document.getElementById('att-stat-out');
+  const sa = document.getElementById('att-stat-absent');
+  const sr = document.getElementById('att-stat-rate');
+  if(si) si.textContent = uniqueIn;
+  if(so) so.textContent = uniqueOut;
+  if(sa) sa.textContent = absent;
+  if(sr) sr.textContent = rate + '%';
+
+  // Also update dashboard sidebar
+  const sb = document.getElementById('sidebar-headcount');
+  if(sb) sb.textContent = employees.length;
+}
+
+// ── Render all ──
+function ciRenderAll(){
+  ciRenderStats();
+  ciRenderLog();
+  ciRenderFullTable();
+}
+
+// ── Export CSV ──
+function exportAttCSV(){
+  const recs = attLoad();
+  if(!recs.length){ alert('No attendance records to export today.'); return; }
+  const date = new Date().toISOString().slice(0,10);
+  let csv = 'No,Name,Type,Time,Date\n';
+  recs.forEach((r,i) => { csv += `${i+1},"${r.name}","${r.type==='in'?'Check In':'Check Out'}","${r.time}","${date}"\n`; });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = `banyan_attendance_${date}.csv`;
+  a.click();
+}
+
+// ── Clear today ──
+function clearTodayAtt(){
+  if(!confirm('Reset all attendance records for today?')) return;
+  localStorage.removeItem(ATT_KEY);
+  ciRenderAll();
+  showToast('Today\'s attendance records have been cleared.');
+}
+
+// ── Hook into showPanel to refresh ──
+const _origShowPanel = showPanel;
+showPanel = function(name, el){
+  _origShowPanel(name, el);
+  if(name === 'checkin') ciRenderAll();
+};
+
+// Init
+ciRenderAll();
+
+
+</script>
+</body>
+</html>
