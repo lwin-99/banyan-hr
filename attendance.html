@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Banyan Partners · Attendance</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1e4d3b;--green-mid:#2d6b54;
+  --green-pale:#edf3f0;--green-xpale:#f4f8f6;
+  --gold:#b8973a;--gold-light:#d4b96a;
+  --white:#ffffff;--cream:#faf9f6;
+  --ink:#1a2820;--ink-mid:#3d5248;--ink-soft:#6b8278;--ink-faint:#a8bdb5;
+  --border:#d6e4de;--border-dark:#b0c9be;
+  --red:#b84a3a;--amber:#b87a1e;--amber-pale:#fdf6ee;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  background:var(--green);
+  font-family:var(--sans);
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+}
+
+/* ── HEADER ── */
+.header{
+  width:100%;background:var(--green);
+  padding:30px 24px 18px;text-align:center;
+}
+.logo-row{display:inline-flex;align-items:center;gap:11px;margin-bottom:8px;}
+.logo-box{
+  width:40px;height:40px;background:var(--gold);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:20px;font-weight:700;color:#fff;
+}
+.logo-name{font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;letter-spacing:0.5px;}
+.header-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:2.5px;text-transform:uppercase;font-weight:300;margin-bottom:8px;}
+.header-date{font-family:var(--serif);font-size:13px;color:var(--gold-light);font-weight:500;letter-spacing:0.3px;}
+
+/* ── CARD ── */
+.card{
+  background:#fff;border-radius:22px 22px 0 0;
+  width:100%;max-width:480px;flex:1;
+  padding:26px 22px 48px;margin-top:6px;
+  box-shadow:0 -6px 40px rgba(0,0,0,0.15);
+}
+
+/* ── CLOCK ── */
+.clock-wrap{
+  text-align:center;margin-bottom:22px;
+  padding-bottom:18px;border-bottom:1px solid var(--border);
+}
+.clock-time{
+  font-family:var(--serif);font-size:56px;font-weight:700;
+  color:var(--green);line-height:1;letter-spacing:-2px;
+}
+.clock-label{font-size:10px;color:var(--ink-faint);letter-spacing:2px;text-transform:uppercase;margin-top:5px;}
+
+/* ── FORM ── */
+.field-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:7px;}
+.select-wrap{position:relative;margin-bottom:18px;}
+.staff-select{
+  width:100%;background:var(--green-xpale);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:15px 16px;font-family:var(--sans);font-size:16px;font-weight:500;
+  color:var(--ink);appearance:none;outline:none;cursor:pointer;
+  transition:border-color 0.2s;
+}
+.staff-select:focus{border-color:var(--green);}
+.select-chevron{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none;font-size:13px;}
+
+/* ── TOGGLE ── */
+.type-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.type-btn{
+  padding:14px 10px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--green-xpale);
+  font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-soft);
+  cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.type-btn.active-in{
+  background:var(--green);border-color:var(--green);color:#fff;
+  box-shadow:0 4px 16px rgba(30,77,59,0.28);
+}
+.type-btn.active-out{
+  background:var(--gold);border-color:var(--gold);color:#fff;
+  box-shadow:0 4px 16px rgba(184,151,58,0.28);
+}
+
+/* ── WARN ── */
+.dup-warn{
+  display:none;
+  background:var(--amber-pale);border:1.5px solid #e8d0a0;border-radius:10px;
+  padding:11px 14px;margin-bottom:14px;
+  font-size:12.5px;color:var(--amber);font-weight:500;text-align:center;
+}
+
+/* ── SUBMIT ── */
+.submit-btn{
+  width:100%;padding:17px;border:none;border-radius:13px;
+  font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;
+}
+.submit-btn.in-mode{ background:var(--green);box-shadow:0 4px 20px rgba(30,77,59,0.3);}
+.submit-btn.in-mode:hover{background:var(--green-mid);transform:translateY(-1px);}
+.submit-btn.out-mode{background:var(--gold);box-shadow:0 4px 20px rgba(184,151,58,0.3);}
+.submit-btn.out-mode:hover{background:var(--gold-light);transform:translateY(-1px);}
+.submit-btn:active{transform:translateY(0)!important;}
+.submit-btn:disabled{background:var(--ink-faint);box-shadow:none;cursor:not-allowed;transform:none!important;}
+
+/* ── SUCCESS ── */
+.success-screen{
+  display:none;text-align:center;padding:10px 0;
+  animation:popIn 0.38s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes popIn{from{opacity:0;transform:scale(0.82);}to{opacity:1;transform:scale(1);}}
+.s-icon{
+  width:76px;height:76px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;margin:0 auto 16px;
+}
+.s-icon.in{background:var(--green-pale);}
+.s-icon.out{background:#fdf6e3;}
+.s-name{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:4px;}
+.s-name.in{color:var(--green);}
+.s-name.out{color:var(--gold);}
+.s-label{font-size:13px;color:var(--ink-soft);margin-bottom:5px;}
+.s-time{font-family:var(--serif);font-size:36px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.s-date{font-size:12px;color:var(--ink-faint);margin-bottom:22px;}
+.s-back{
+  background:none;border:1.5px solid var(--border);border-radius:10px;
+  padding:12px 30px;font-family:var(--sans);font-size:13px;font-weight:500;
+  color:var(--ink-soft);cursor:pointer;transition:all 0.2s;
+}
+.s-back:hover{border-color:var(--green);color:var(--green);}
+
+/* ── LOG ── */
+.log-section{margin-top:26px;padding-top:18px;border-top:1px solid var(--border);}
+.log-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.log-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);}
+.log-count{background:var(--green-pale);color:var(--green);font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;}
+.log-empty{text-align:center;padding:18px;color:var(--ink-faint);font-size:13px;background:var(--green-xpale);border-radius:10px;}
+.log-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:9px;margin-bottom:6px;
+  border:1px solid var(--border);
+  animation:slideIn 0.2s ease forwards;
+}
+.log-item.in-rec{background:var(--green-xpale);}
+.log-item.out-rec{background:#fdf6e3;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+.log-left{display:flex;align-items:center;gap:9px;}
+.log-av{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.log-av.in{background:var(--green);}
+.log-av.out{background:var(--gold);}
+.log-name{font-size:13px;font-weight:500;color:var(--ink);}
+.log-sub{font-size:10px;color:var(--ink-soft);}
+.log-badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;margin-left:4px;letter-spacing:0.5px;}
+.badge-in{background:var(--green-pale);color:var(--green);}
+.badge-out{background:#fdf6e3;color:var(--gold);}
+.log-time{font-family:var(--serif);font-size:14px;font-weight:700;}
+.log-time.in{color:var(--green);}
+.log-time.out{color:var(--gold);}
+
+/* ── FOOTER ── */
+.page-footer{
+  width:100%;max-width:480px;
+  padding:14px 22px;
+  text-align:center;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-row">
+    <div class="logo-box">B</div>
+    <span class="logo-name">Banyan Partners</span>
+  </div>
+  <div class="header-sub">Staff Attendance</div>
+  <div class="header-date" id="hdr-date">—</div>
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+  <!-- FORM VIEW -->
+  <div id="form-view">
+
+    <!-- Live Clock -->
+    <div class="clock-wrap">
+      <div class="clock-time" id="clock">00:00:00</div>
+      <div class="clock-label">Current Time · Bangkok (ICT)</div>
+    </div>
+
+    <!-- Name -->
+    <div class="field-label">Your Name</div>
+    <div class="select-wrap">
+      <select class="staff-select" id="staff-name" onchange="onNameChange()">
+        <option value="">— Select your name —</option>
+        <option>Thawtar</option>
+        <option>Kaythi</option>
+        <option>Nay Lin Oo</option>
+        <option>Khine</option>
+        <option>Wai Yan Phyo</option>
+        <option>Htet Htet Hlaing</option>
+        <option>Ohnmaraung</option>
+        <option>Aye Phyo</option>
+        <option>Zar Ni</option>
+        <option>Tin Min Htut</option>
+        <option>Hein Zaw Zaw Myint</option>
+        <option>Tris</option>
+        <option>Lwin Lwin Kyaw</option>
+        <option>Moh Moh</option>
+        <option>Info</option>
+        <option>Aye Myat Tun</option>
+        <option>Hnin Nandar Win</option>
+        <option>Pyae Phyo Kyaw</option>
+        <option>Thet Mon</option>
+        <option>Chotika Sianglue</option>
+        <option>Thurein</option>
+        <option>Wynearkarkyaw</option>
+        <option>Grace</option>
+        <option>Patty</option>
+        <option>Zurahnin</option>
+      </select>
+      <span class="select-chevron">▼</span>
+    </div>
+
+    <!-- Type -->
+    <div class="field-label">Check Type</div>
+    <div class="type-row">
+      <button class="type-btn active-in" id="btn-in" onclick="setType('in')">
+        ☀️ Check In
+      </button>
+      <button class="type-btn" id="btn-out" onclick="setType('out')">
+        🌙 Check Out
+      </button>
+    </div>
+
+    <!-- Duplicate warning -->
+    <div class="dup-warn" id="dup-warn"></div>
+
+    <!-- Submit -->
+    <button class="submit-btn in-mode" id="submit-btn" onclick="doSubmit()">
+      Record Check-In
+    </button>
+
+    <!-- Today Log -->
+    <div class="log-section">
+      <div class="log-header">
+        <span class="log-title">Today's Records</span>
+        <span class="log-count" id="log-count">0 records</span>
+      </div>
+      <div id="log-list">
+        <div class="log-empty">No records yet — be the first to check in! 👋</div>
+      </div>
+    </div>
+
+  </div><!-- /form-view -->
+
+  <!-- SUCCESS VIEW -->
+  <div id="success-view" class="success-screen">
+    <div class="s-icon" id="s-icon"></div>
+    <div class="s-name" id="s-name"></div>
+    <div class="s-label" id="s-label"></div>
+    <div class="s-time" id="s-time"></div>
+    <div class="s-date" id="s-date"></div>
+    <button class="s-back" onclick="goBack()">← Record Another</button>
+  </div>
+
+</div><!-- /card -->
+
+<div class="page-footer">Banyan Partners · Bangkok · Attendance System</div>
+
+<script>
+// ── STORAGE KEY (same key as HR dashboard) ──
+const TODAY   = new Date().toISOString().slice(0,10);
+const ATT_KEY = 'banyan_att_' + TODAY;
+
+function load(){ try{ return JSON.parse(localStorage.getItem(ATT_KEY))||[]; }catch{ return []; } }
+function save(r){ localStorage.setItem(ATT_KEY, JSON.stringify(r)); }
+
+// ── STATE ──
+let currentType = 'in';
+
+// ── CLOCK ──
+function tick(){
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleTimeString('en-GB',{hour12:false});
+  document.getElementById('hdr-date').textContent =
+    now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(tick,1000); tick();
+
+// ── TYPE TOGGLE ──
+function setType(type){
+  currentType = type;
+  const bi  = document.getElementById('btn-in');
+  const bo  = document.getElementById('btn-out');
+  const sub = document.getElementById('submit-btn');
+  if(type==='in'){
+    bi.className  = 'type-btn active-in';
+    bo.className  = 'type-btn';
+    sub.textContent = 'Record Check-In';
+    sub.className = 'submit-btn in-mode';
+  } else {
+    bi.className  = 'type-btn';
+    bo.className  = 'type-btn active-out';
+    sub.textContent = 'Record Check-Out';
+    sub.className = 'submit-btn out-mode';
+  }
+  checkDuplicate();
+}
+
+// ── NAME CHANGE ──
+function onNameChange(){ checkDuplicate(); }
+
+// ── DUPLICATE CHECK ──
+function checkDuplicate(){
+  const name = document.getElementById('staff-name').value;
+  const warn = document.getElementById('dup-warn');
+  const sub  = document.getElementById('submit-btn');
+  if(!name){ warn.style.display='none'; sub.disabled=false; return; }
+  const exists = load().find(r => r.name===name && r.type===currentType);
+  if(exists){
+    warn.style.display = 'block';
+    warn.textContent   = `⚠ ${name} already ${currentType==='in'?'checked in':'checked out'} at ${exists.time}`;
+    sub.disabled = true;
+  } else {
+    warn.style.display = 'none';
+    sub.disabled = false;
+  }
+}
+
+// ── SUBMIT ──
+function doSubmit(){
+  const name = document.getElementById('staff-name').value;
+  if(!name){ alert('Please select your name first.'); return; }
+
+  const now     = new Date();
+  const timeStr = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  const dateStr = now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Save to localStorage (shared with HR dashboard)
+  const recs = load();
+  recs.unshift({ name, type:currentType, time:timeStr, timestamp:now.getTime(), date:TODAY });
+  save(recs);
+
+  // Show success screen
+  const isIn = currentType === 'in';
+  document.getElementById('form-view').style.display   = 'none';
+  document.getElementById('success-view').style.display = 'block';
+
+  const icon = document.getElementById('s-icon');
+  icon.textContent  = isIn ? '✅' : '👋';
+  icon.className    = `s-icon ${isIn?'in':'out'}`;
+  const nm = document.getElementById('s-name');
+  nm.textContent = name;
+  nm.className   = `s-name ${isIn?'in':'out'}`;
+  document.getElementById('s-label').textContent = isIn ? 'Successfully checked in at' : 'Successfully checked out at';
+  document.getElementById('s-time').textContent  = timeStr;
+  document.getElementById('s-date').textContent  = dateStr;
+
+  renderLog();
+}
+
+// ── GO BACK ──
+function goBack(){
+  document.getElementById('form-view').style.display   = 'block';
+  document.getElementById('success-view').style.display = 'none';
+  document.getElementById('staff-name').value = '';
+  document.getElementById('dup-warn').style.display = 'none';
+  document.getElementById('submit-btn').disabled = false;
+  setType('in');
+  renderLog();
+}
+
+// ── RENDER LOG ──
+function renderLog(){
+  const recs = load();
+  document.getElementById('log-count').textContent =
+    `${recs.length} record${recs.length!==1?'s':''}`;
+
+  if(!recs.length){
+    document.getElementById('log-list').innerHTML =
+      '<div class="log-empty">No records yet — be the first to check in! 👋</div>';
+    return;
+  }
+
+  document.getElementById('log-list').innerHTML = recs.map(r => {
+    const init = r.name.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const isIn = r.type === 'in';
+    return `
+      <div class="log-item ${isIn?'in-rec':'out-rec'}">
+        <div class="log-left">
+          <div class="log-av ${isIn?'in':'out'}">${init}</div>
+          <div>
+            <div class="log-name">${r.name}
+              <span class="log-badge ${isIn?'badge-in':'badge-out'}">${isIn?'IN':'OUT'}</span>
+            </div>
+            <div class="log-sub">${isIn?'Checked in today':'Checked out today'}</div>
+          </div>
+        </div>
+        <div class="log-time ${isIn?'in':'out'}">${r.time}</div>
+      </div>`;
+  }).join('');
+}
+
+// Init
+renderLog();
+</script>
+</body>
+</html>
