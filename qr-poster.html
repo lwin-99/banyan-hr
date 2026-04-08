@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banyan · Attendance QR Poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --green:#1e4d3b;--green-mid:#2d6b54;
+  --green-pale:#edf3f0;--green-xpale:#f4f8f6;
+  --gold:#b8973a;--gold-light:#d4b96a;
+  --white:#fff;--cream:#faf9f6;
+  --ink:#1a2820;--ink-soft:#6b8278;--ink-faint:#a8bdb5;
+  --border:#d6e4de;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#dde8e3;font-family:var(--sans);
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:32px 16px;gap:20px;
+}
+
+/* ── POSTER ── */
+.poster{
+  background:var(--white);width:100%;max-width:420px;
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 10px 50px rgba(30,77,59,0.2);
+  border:1px solid var(--border);
+}
+.p-header{
+  background:var(--green);padding:28px 28px 22px;text-align:center;
+}
+.p-logo{display:inline-flex;align-items:center;gap:11px;margin-bottom:10px;}
+.logo-box{
+  width:40px;height:40px;background:var(--gold);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:20px;font-weight:700;color:#fff;
+}
+.logo-name{font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;letter-spacing:0.5px;}
+.p-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:2.5px;text-transform:uppercase;font-weight:300;}
+
+.p-body{padding:28px 28px 22px;text-align:center;}
+.scan-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px;}
+
+.qr-wrap{
+  width:220px;height:220px;margin:0 auto 22px;
+  background:#fff;border:3px solid var(--green);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 16px rgba(30,77,59,0.14);
+  overflow:visible;
+  position:relative;
+}
+#qrcode{
+  display:flex;align-items:center;justify-content:center;
+  width:190px;height:190px;
+}
+#qrcode canvas,
+#qrcode img{
+  display:block !important;
+  width:190px !important;
+  height:190px !important;
+  border-radius:4px;
+}
+
+.p-title{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.p-desc{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;line-height:1.6;font-weight:300;}
+
+.steps{text-align:left;background:var(--green-xpale);border-radius:10px;padding:14px 16px;}
+.step{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.step:last-child{margin-bottom:0;}
+.step-num{
+  width:22px;height:22px;border-radius:50%;background:var(--green);
+  color:#fff;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.step-text{font-size:12px;color:var(--ink);line-height:1.5;}
+.step-text b{color:var(--green);}
+
+.p-footer{
+  background:var(--green);padding:13px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.p-url{font-size:11px;color:rgba(255,255,255,0.55);word-break:break-all;font-weight:300;}
+.p-badge{
+  background:var(--gold);color:#fff;font-size:10px;font-weight:600;
+  padding:3px 11px;border-radius:20px;white-space:nowrap;margin-left:10px;letter-spacing:0.5px;
+}
+
+/* ── CONTROLS ── */
+.controls{
+  background:var(--white);border-radius:14px;
+  padding:22px;width:100%;max-width:420px;
+  box-shadow:0 2px 16px rgba(30,77,59,0.09);
+  border:1px solid var(--border);
+}
+.ctrl-title{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.ctrl-sub{font-size:12px;color:var(--ink-soft);margin-bottom:16px;line-height:1.5;}
+.live-url-box{
+  background:var(--green-pale);border:1.5px solid var(--border);
+  border-radius:8px;padding:12px 14px;margin-bottom:14px;
+  font-size:13px;color:var(--green);font-weight:600;
+  word-break:break-all;text-align:center;
+  font-family:var(--sans);
+}
+.btn-row{display:flex;gap:10px;}
+.btn{
+  flex:1;padding:12px;border-radius:9px;border:none;
+  font-family:var(--serif);font-size:15px;font-weight:700;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.2px;
+}
+.btn.green{background:var(--green);color:#fff;}
+.btn.green:hover{background:var(--green-mid);}
+.btn.gold{background:var(--gold);color:#fff;}
+.btn.gold:hover{background:var(--gold-light);}
+.ctrl-hint{
+  font-size:11px;color:var(--ink-faint);
+  text-align:center;margin-top:12px;line-height:1.6;
+}
+
+@media print{
+  body{background:#fff;padding:0;justify-content:flex-start;}
+  .controls{display:none!important;}
+  .poster{box-shadow:none;border:none;max-width:100%;border-radius:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- POSTER -->
+<div class="poster">
+  <div class="p-header">
+    <div class="p-logo">
+      <div class="logo-box">B</div>
+      <span class="logo-name">Banyan Partners</span>
+    </div>
+    <div class="p-sub">Daily Attendance System</div>
+  </div>
+
+  <div class="p-body">
+    <div class="scan-label">Scan to Record Your Attendance</div>
+
+    <div class="qr-wrap">
+      <div id="qrcode">
+        <div id="qr-loading" style="width:190px;height:190px;background:var(--green-xpale);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+          <div style="font-size:36px">📱</div>
+          <div style="font-size:11px;color:var(--ink-faint);text-align:center;line-height:1.4;padding:0 12px">Generating QR code…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-title">Check In · Check Out</div>
+    <div class="p-desc">
+      Scan this QR code every morning when you arrive and every evening before you leave.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><b>Open your phone camera</b> and point it at the QR code</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><b>Select your name</b> from the dropdown list</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><b>Tap Check In or Check Out</b> and submit ✓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-footer">
+    <span class="p-url" id="p-url-display">lwin-99.github.io/banyan-hr/attendance.html</span>
+    <span class="p-badge">SCAN DAILY</span>
+  </div>
+</div>
+
+<!-- CONTROLS (hidden on print) -->
+<div class="controls">
+  <div class="ctrl-title">✅ Your Live Attendance URL</div>
+  <div class="ctrl-sub">Your attendance page is already hosted on GitHub. Click <strong>Generate QR</strong> to create the QR code, then print the poster.</div>
+
+  <div class="live-url-box" id="live-url-display">
+    https://lwin-99.github.io/banyan-hr/attendance.html
+  </div>
+
+  <div class="btn-row">
+    <button class="btn green" onclick="generateQR()">Generate QR</button>
+    <button class="btn gold" onclick="window.print()">🖨 Print Poster</button>
+  </div>
+  <div class="ctrl-hint">
+    After uploading <strong>attendance.html</strong> to your GitHub repo,<br>
+    click Generate QR → your poster is ready to print! 🎉
+  </div>
+</div>
+
+<script>
+const LIVE_URL = 'https://lwin-99.github.io/banyan-hr/attendance.html';
+
+function generateQR(){
+  // Completely clear the container first
+  const box = document.getElementById('qrcode');
+  box.innerHTML = '';
+
+  // Generate QR — match exact pixel size
+  new QRCode(box, {
+    text: LIVE_URL,
+    width: 190,
+    height: 190,
+    colorDark: '#1e4d3b',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  // Force canvas/img to fill box correctly after QRCode renders
+  setTimeout(() => {
+    const canvas = box.querySelector('canvas');
+    const img    = box.querySelector('img');
+    if(canvas){
+      canvas.style.width  = '190px';
+      canvas.style.height = '190px';
+      canvas.style.display = 'block';
+      canvas.style.borderRadius = '4px';
+    }
+    if(img){
+      img.style.width  = '190px';
+      img.style.height = '190px';
+      img.style.display = 'block';
+      img.style.borderRadius = '4px';
+    }
+  }, 100);
+
+  document.getElementById('p-url-display').textContent = LIVE_URL;
+}
+
+// Auto-generate after fonts & library load
+window.addEventListener('load', () => setTimeout(generateQR, 500));
+</script>
+</body>
+</html>
