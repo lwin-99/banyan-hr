@@ -650,9 +650,155 @@
     font-size: 18px;
     font-weight: 500;
   }
+
+  /* ── LOGIN SCREEN ── */
+  .login-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 0;
+  }
+  .login-overlay.hidden { display: none; }
+  .login-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+  .login-box {
+    background: var(--white);
+    border-radius: 16px;
+    width: 100%; max-width: 380px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative; z-index: 1;
+    animation: loginFadeIn 0.4s ease forwards;
+  }
+  @keyframes loginFadeIn {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .login-header {
+    background: var(--green);
+    padding: 32px 32px 24px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+  .login-logo {
+    display: inline-flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .login-logo-box {
+    width: 44px; height: 44px; background: var(--gold); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: #fff;
+  }
+  .login-logo-name {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 700; color: #fff;
+  }
+  .login-tagline {
+    font-size: 10px; color: rgba(255,255,255,0.45);
+    letter-spacing: 2.5px; text-transform: uppercase; font-weight: 300;
+  }
+  .login-body { padding: 28px 32px 32px; }
+  .login-title {
+    font-family: var(--font-serif); font-size: 20px; font-weight: 700;
+    color: var(--green); margin-bottom: 4px;
+  }
+  .login-sub { font-size: 12px; color: var(--ink-soft); margin-bottom: 24px; font-weight: 300; }
+  .login-field { margin-bottom: 16px; }
+  .login-label {
+    display: block; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 6px;
+  }
+  .login-input {
+    width: 100%; background: var(--green-xpale);
+    border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; font-family: var(--font-sans);
+    font-size: 14px; color: var(--ink); outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--green); background: #fff; }
+  .login-error {
+    display: none;
+    background: var(--red-pale); border: 1px solid #e8c4be;
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: 12px; color: var(--red); font-weight: 500; text-align: center;
+  }
+  .login-error.show { display: block; animation: shake 0.4s ease; }
+  @keyframes shake {
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(8px); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(5px); }
+  }
+  .login-btn {
+    width: 100%; padding: 14px; background: var(--green);
+    border: none; border-radius: 8px;
+    font-family: var(--font-serif); font-size: 16px; font-weight: 700;
+    color: #fff; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .login-btn:hover { background: var(--green-mid); transform: translateY(-1px); }
+  .login-btn:active { transform: translateY(0); }
+  .login-footer {
+    text-align: center; margin-top: 16px;
+    font-size: 11px; color: var(--ink-faint);
+  }
+  /* Logout button in nav */
+  .logout-btn {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7); padding: 5px 12px; border-radius: 6px;
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+  }
+  .logout-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
 </style>
 </head>
 <body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-bg-pattern"></div>
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-logo">
+        <div class="login-logo-box">B</div>
+        <span class="login-logo-name">Banyan Partners</span>
+      </div>
+      <div class="login-tagline">HR Portal · Secure Access</div>
+    </div>
+    <div class="login-body">
+      <div class="login-title">Welcome Back</div>
+      <div class="login-sub">Sign in with your HR admin credentials to continue.</div>
+
+      <div class="login-error" id="login-error">
+        ✕ Incorrect username or password. Please try again.
+      </div>
+
+      <div class="login-field">
+        <label class="login-label">Username</label>
+        <input class="login-input" type="text" id="login-username"
+          placeholder="Enter username" autocomplete="username"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Password</label>
+        <input class="login-input" type="password" id="login-password"
+          placeholder="Enter password" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+
+      <button class="login-btn" onclick="doLogin()">Sign In →</button>
+
+      <div class="login-footer">
+        Banyan Partners · HR Portal v2.1 · Bangkok
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- TOP NAV -->
 <nav class="topnav">
@@ -681,12 +827,14 @@
     <span class="clock" id="clock">00:00:00</span>
     <div class="nav-sep"></div>
     <div class="nav-user">
-      <div class="nav-avatar">SY</div>
+      <div class="nav-avatar" id="nav-avatar">—</div>
       <div>
-        <div class="nav-user-info-name">Shwe Yee Oo</div>
-        <div class="nav-user-info-role">Sr. Investment Analyst</div>
+        <div class="nav-user-info-name" id="nav-user-name">—</div>
+        <div class="nav-user-info-role" id="nav-user-role">HR Admin</div>
       </div>
     </div>
+    <div class="nav-sep"></div>
+    <button class="logout-btn" onclick="doLogout()">↩ Logout</button>
   </div>
 </nav>
 
@@ -1184,6 +1332,7 @@
         </div>
         <div class="page-actions">
           <button class="btn btn-ghost" onclick="exportAttCSV()">↓ Export CSV</button>
+          <button class="btn btn-ghost" onclick="ciRenderAll();showToast('Attendance data refreshed.')">↺ Refresh</button>
           <button class="btn btn-primary" onclick="clearTodayAtt()">↺ Reset Today</button>
         </div>
       </div>
@@ -1465,7 +1614,79 @@
 <!-- MODAL: Post Role -->
 
 <script>
-// Clock
+// ══════════════════════════════════════════
+// AUTH — Login / Logout
+// ══════════════════════════════════════════
+const ADMINS = [
+  { username: 'Admin', password: 'banyan123', name: 'Admin',  role: 'CEO / Board Member',   initials: 'AD' },
+  { username: 'Zarni', password: 'banyan123', name: 'Zarni',  role: 'HR Manager',            initials: 'ZN' },
+];
+const SESSION_KEY = 'banyan_hr_session';
+
+function getSession() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { return null; }
+}
+function setSession(user) {
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+}
+function clearSession() {
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+function doLogin() {
+  const u = document.getElementById('login-username').value.trim();
+  const p = document.getElementById('login-password').value;
+  const err = document.getElementById('login-error');
+
+  const match = ADMINS.find(a =>
+    a.username.toLowerCase() === u.toLowerCase() && a.password === p
+  );
+
+  if (!match) {
+    err.classList.add('show');
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-password').focus();
+    setTimeout(() => err.classList.remove('show'), 3000);
+    return;
+  }
+
+  // Success
+  setSession(match);
+  document.getElementById('login-overlay').classList.add('hidden');
+  document.getElementById('nav-avatar').textContent   = match.initials;
+  document.getElementById('nav-user-name').textContent = match.name;
+  document.getElementById('nav-user-role').textContent = match.role;
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+  err.classList.remove('show');
+  showToast('Welcome, ' + match.name + '! You are now logged in.');
+}
+
+function doLogout() {
+  if (!confirm('Are you sure you want to logout?')) return;
+  clearSession();
+  document.getElementById('login-overlay').classList.remove('hidden');
+  document.getElementById('nav-avatar').textContent    = '—';
+  document.getElementById('nav-user-name').textContent = '—';
+  document.getElementById('nav-user-role').textContent = 'HR Admin';
+  document.getElementById('login-username').focus();
+}
+
+// Check session on page load
+(function checkAuth() {
+  const session = getSession();
+  if (session) {
+    document.getElementById('login-overlay').classList.add('hidden');
+    document.getElementById('nav-avatar').textContent    = session.initials;
+    document.getElementById('nav-user-name').textContent = session.name;
+    document.getElementById('nav-user-role').textContent = session.role;
+  } else {
+    document.getElementById('login-overlay').classList.remove('hidden');
+    setTimeout(() => document.getElementById('login-username').focus(), 300);
+  }
+})();
+
+
 function tick() {
   document.getElementById('clock').textContent =
     new Date().toLocaleTimeString('en-GB', { hour12: false });
@@ -1855,16 +2076,18 @@ function ciRenderFullTable(){
   tbody.innerHTML = ALL_STAFF.map(name => {
     const inTime  = inMap[name]  || null;
     const outTime = outMap[name] || null;
-    let statusHtml, rowBg = '';
+    let statusHtml, rowStyle = '';
     if(inTime && outTime){
-      statusHtml = `<span class="tag tag-green">Complete</span>`;
-      rowBg = '';
+      statusHtml = `<span class="tag tag-green">✓ Complete</span>`;
+      rowStyle = 'background:var(--green-xpale)';
     } else if(inTime){
-      statusHtml = `<span class="tag tag-blue">In Office</span>`;
+      statusHtml = `<span class="tag tag-blue">● In Office</span>`;
+      rowStyle = '';
     } else {
-      statusHtml = `<span class="tag tag-gold">Not Yet In</span>`;
+      statusHtml = `<span class="tag tag-gold">○ Not Yet In</span>`;
+      rowStyle = '';
     }
-    return `<tr style="${rowBg}">
+    return `<tr style="${rowStyle}">
       <td style="font-weight:500">${name}</td>
       <td style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:${inTime?'var(--green)':'var(--ink-faint)'}">${inTime||'—'}</td>
       <td style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:${outTime?'var(--gold)':'var(--ink-faint)'}">${outTime||'—'}</td>
@@ -1889,7 +2112,22 @@ function ciRenderStats(){
   if(sa) sa.textContent = absent;
   if(sr) sr.textContent = rate + '%';
 
-  // Also update dashboard sidebar
+  // Update sidebar nav badge with live count
+  const navBtns = document.querySelectorAll('.nav-item');
+  navBtns.forEach(btn => {
+    if(btn.textContent.includes('Check In')) {
+      let badge = btn.querySelector('.nav-badge');
+      if(!badge) {
+        badge = document.createElement('span');
+        badge.className = 'nav-badge';
+        btn.appendChild(badge);
+      }
+      badge.textContent = uniqueIn + ' in';
+      badge.style.background = uniqueIn > 0 ? 'var(--green-light)' : 'var(--ink-faint)';
+    }
+  });
+
+  // Update sidebar headcount
   const sb = document.getElementById('sidebar-headcount');
   if(sb) sb.textContent = employees.length;
 }
@@ -1931,6 +2169,20 @@ showPanel = function(name, el){
 
 // Init
 ciRenderAll();
+
+// ── AUTO-REFRESH every 30 seconds ──
+// Picks up new check-ins from attendance.html (same domain = same localStorage)
+setInterval(function() {
+  var currentPanel = document.querySelector('[id^="panel-"]:not(.hidden)');
+  if (currentPanel && currentPanel.id === 'panel-checkin') {
+    ciRenderAll();
+  }
+  // Always update dashboard KPIs even if not on checkin panel
+  var recs = attLoad();
+  var uniqueIn = [...new Set(recs.filter(r=>r.type==='in').map(r=>r.name))].length;
+  var siEl = document.getElementById('att-stat-in');
+  if (siEl) siEl.textContent = uniqueIn;
+}, 30000);
 
 
 </script>
